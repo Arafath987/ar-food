@@ -1,1 +1,0 @@
-export { FoodCard} from './components/FoodCard'

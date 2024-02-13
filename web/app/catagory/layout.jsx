@@ -1,33 +1,18 @@
-"use client";
-
+import React from "react";
 import {
   Box,
   Flex,
   Heading,
   InputGroup,
   InputLeftElement,
-  CircularProgress,
 } from "@chakra-ui/react";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
 import { Input } from "@chakra-ui/react";
-import { FoodCard } from "../views/dashboard";
-import { useEffect, useState } from "react";
 import { Navbar } from "app/layout/Food/Navbar";
+import Link from "next/link";
 
-const page = () => {
-  const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      const res = await fetch("https://fakestoreapi.com/products");
-      const data = await res.json();
-      setData(data);
-      setLoading(false);
-    })();
-  }, []);
-
+const DashLayout = ({ children }) => {
   return (
     <div>
       <Flex
@@ -75,43 +60,16 @@ const page = () => {
           borderWidth="2px"
           borderRadius="10px"
         >
-          <MdOutlineProductionQuantityLimits size="25px" />
+          <Link href="/cart">
+            <MdOutlineProductionQuantityLimits size="25px" />
+          </Link>
         </Flex>
       </Flex>
       <Navbar />
-      <Flex
-        width="100%"
-        height="100%"
-        marginTop="-75px"
-        bgColor="#31A5A5"
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="center"
-        flexDirection={{ base: "column", md: "row" }}
-        gap="5px"
-      >
-        {!isLoading &&
-          data.map((el) => (
-            <FoodCard
-              name={el.title}
-              price={el.id}
-              image={el.image}
-              id={el.id}
-            />
-          ))}
-        {isLoading && (
-          <Box
-            height="700px"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <CircularProgress value={80} isIndeterminate />
-          </Box>
-        )}
-      </Flex>
+
+      {children}
     </div>
   );
 };
 
-export default page;
+export default DashLayout;
