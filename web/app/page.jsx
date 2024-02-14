@@ -13,7 +13,7 @@ import { BsSearch } from "react-icons/bs";
 import { Input } from "@chakra-ui/react";
 import { FoodCard } from "../views/dashboard";
 import { useEffect, useState } from "react";
-import { Navbar } from "app/layout/Food/Navbar";
+import { Navbar } from "../layout/Food/Navbar";
 
 const page = () => {
   const [data, setData] = useState([]);
