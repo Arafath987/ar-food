@@ -30,3 +30,6 @@ Dining
 # Ignore secret keys and sensitive information
 *.secret_key
 *.env
+
+
+.next
