@@ -26,7 +26,7 @@ export const Navbar = () => {
 
       <Heading
         marginLeft="20px"
-        width="260px"
+        width="15%"
         lineHeight="40px"
         fontSize="2xl"
         fontWeight="light"
@@ -36,7 +36,7 @@ export const Navbar = () => {
       </Heading>
       <Heading
         marginLeft="20px"
-        width="260px"
+        width="15%"
         lineHeight="40px"
         fontSize="2xl"
         fontWeight="light"
@@ -46,7 +46,7 @@ export const Navbar = () => {
       </Heading>
       <Heading
         marginLeft="20px"
-        width="260px"
+        width="15%"
         lineHeight="40px"
         fontSize="2xl"
         fontWeight="light"
@@ -56,7 +56,7 @@ export const Navbar = () => {
       </Heading>
       <Heading
         marginLeft="20px"
-        width="260px"
+        width="15%"
         lineHeight="40px"
         fontSize=""
         fontWeight="normel"

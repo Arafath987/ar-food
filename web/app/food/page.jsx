@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Card, Box, Flex, Button, Image } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { CartContext } from "app/context/Product";
+import { CartContext } from "../../context/Product";
 
 const page = () => {
   const [data, setData] = useState();

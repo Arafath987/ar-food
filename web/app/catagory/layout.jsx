@@ -9,7 +9,7 @@ import {
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
 import { Input } from "@chakra-ui/react";
-import { Navbar } from "app/layout/Food/Navbar";
+import { Navbar } from "../../layout/Food/Navbar";
 import Link from "next/link";
 
 const DashLayout = ({ children }) => {
