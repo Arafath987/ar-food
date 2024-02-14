@@ -31,13 +31,13 @@ class UserManager(BaseUserManager):
 
 class vendor(AbstractBaseUser):
     id = models.BigAutoField(primary_key =True)
-   # Profile_picture = models.ImageField(upload_to= 'vendor/profile')
+    Profile_picture = models.ImageField(upload_to= 'vendor/profile', blank=True, null=True)
     username = models.CharField(max_length=50)
     designation = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(max_length=254, unique=True,)
     restaurant_name = models.CharField(max_length=50)
-   # restaurant_licence = models.ImageField(upload_to='vendor/licence')
+    restaurant_licence = models.ImageField(upload_to='vendor/licence', blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     created_date = models.DateTimeField(auto_now_add=True)

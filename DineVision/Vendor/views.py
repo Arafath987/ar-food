@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.exceptions import AuthenticationFailed
 import jwt,datetime
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserProfileSerializer, LoginSerializer, VendorSerializer
+from .serializers import UserProfileSerializer, LoginSerializer, VendorSerializer, ChangePasswordSerializer
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate
@@ -63,16 +63,15 @@ class LogOutView(viewsets.ModelViewSet):
         return response
     
 class UserProfileView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get_userprofile(self, request):
         token = request.COOKIES.get('jwt')
 
         if not token:
             raise AuthenticationFailed('User is not authenticated')
         
         try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('User is not authenticated')
         
@@ -87,7 +86,7 @@ class UserProfileView(viewsets.ModelViewSet):
             raise AuthenticationFailed('User is not authenticated')
         
         try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('User is not authenticated')
         
@@ -97,4 +96,34 @@ class UserProfileView(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ChangingViewSet(viewsets.ModelViewSet):
+
+    def change_password(self,request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            old_password = serializer.validated_data.get('old_password')
+            new_password = serializer.validated_data.get('new_password')
+
+            token = request.COOKIES.get('jwt')
+            if not token:
+                raise AuthenticationFailed('User is not authenticated')
+            try:
+                payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
+            except jwt.ExpiredSignatureError:
+                raise AuthenticationFailed('User is not authenticated')
+        
+            Vendor = vendor.objects.get(id=payload['id'])
+
+        # Check if the old password is correct
+            if not Vendor.check_password(old_password):
+                return Response({'error': 'Invalid old password'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Change the password
+            Vendor.set_password(new_password)
+            Vendor.save()
+
+            return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

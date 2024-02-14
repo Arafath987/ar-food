@@ -18,8 +18,16 @@ class VendorSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = vendor
-        fields = '__all__'
+        fields = ['Profile_picture','username','designation','phone_number','email']
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    class Meta:
+        model = vendor
+        fields = ['old_password', 'new_password']

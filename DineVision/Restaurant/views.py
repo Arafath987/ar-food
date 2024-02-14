@@ -99,7 +99,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class MenuItemViewSet(viewsets.ModelViewSet):
     
     @api_view(['GET'])
-    def get_menu_items(self, request, restaurant_name):
+    def get_menu_items(request, restaurant_name):
         try:
             restaurant = Restaurant.objects.get(name=restaurant_name)
         except Restaurant.DoesNotExist:

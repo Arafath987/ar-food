@@ -6,7 +6,6 @@ __pycache__/
 # Local development settings
 *.sqlite3
 *.db
-Lib
 # Media files
 media/
 
@@ -16,6 +15,7 @@ staticfiles/
 # Virtual environment
 venv/
 .env
+Dining
 
 # IDE files
 .vscode/

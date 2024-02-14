@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import OrderSerializer , OrderItemSerializer
+from .serializers import OrderSerializer , OrderWithItemsSerializer
 from Restaurant.serializers import CustomerMenuItemSerializer
 from Vendor.models import vendor
 from Restaurant.models import Category, MenuItem, Restaurant
@@ -126,12 +126,12 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class OrderItemViewSet(viewsets.ModelViewSet):
-    @action(detail=True, methods=['POST'])
-    def Order_item_details(self,requset,order_id):
+    @action(detail=True, methods=['GET'])
+    def order_item_details(self, request, order_id):
         order = get_object_or_404(Order, id=order_id)
-        order_item = order.items.all()
-        serializer = OrderItemSerializer(order_item, many=True)
+        serializer = OrderWithItemsSerializer(order)  # Pass Order instance
         return Response(serializer.data, status=status.HTTP_200_OK)
+
     
 
 class RateMenuItemView(viewsets.ModelViewSet):

@@ -19,8 +19,16 @@ class MenuItemSerializer(serializers.ModelSerializer):
         # image,price
         
 class OrderItemSerializer(serializers.ModelSerializer):
-    menu_item = MenuItemSerializer(source='menu_item')
-    order_details = OrderItemSupportSerializer()
+    menu_item = MenuItemSerializer()
     class Meta:
         model = OrderItem
-        fields = ['menu_item', 'quantity', 'order_details', 'total_price_item']
+        fields = ['menu_item', 'quantity', 'total_price_item']
+
+class OrderWithItemsSerializer(serializers.ModelSerializer):
+    order_items = OrderItemSerializer(source='orderitem_set', many=True)
+    total_price = serializers.DecimalField(max_digits=10, decimal_places=2)  # Directly reference the total_price field
+    table_number = serializers.IntegerField()  # Directly reference the table_number field
+
+    class Meta:
+        model = Order
+        fields = ['total_price', 'table_number', 'order_items']
