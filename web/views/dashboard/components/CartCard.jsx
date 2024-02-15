@@ -1,8 +1,6 @@
 import { Heading, Card, Box, Image } from "@chakra-ui/react";
 
-import React from "react";
-
-export const CartCard = () => {
+export const CartCard = ({ image, name, price }) => {
   return (
     <Card
       borderRadius="30px"
@@ -16,16 +14,16 @@ export const CartCard = () => {
       height="120px"
     >
       <Box ml="20px">
-        <Image src="Fried-Rice-9-500x500 1"></Image>
+        <Image src={image} height="100" width="200" />
       </Box>
       <Box>
-        <Heading>fried race</Heading>
+        <Heading>{name}</Heading>
       </Box>
       <Box>
         <Heading>x 2</Heading>
       </Box>
       <Box mr="20px">
-        <Heading>₹160</Heading>
+        <Heading>{price}</Heading>
       </Box>
     </Card>
   );

@@ -3,17 +3,12 @@
 import {
   Box,
   Button,
-  Checkbox,
   Container,
-  Divider,
   FormControl,
   FormLabel,
   Heading,
-  HStack,
   Input,
-  Link,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { useContext, useRef } from "react";
 import { AuthContext } from "../../../context/Auth";
@@ -63,7 +58,7 @@ const App = () => {
               </FormControl>
             </Stack>
             <Stack spacing="6">
-              <Button onClick={handleLogin}>Sign in</Button>
+              <Button onClick={handleLogin}>log in</Button>
             </Stack>
           </Stack>
         </Box>
