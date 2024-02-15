@@ -12,6 +12,7 @@ from .serializers import (
     MenuItemUpdateSerializer, 
     CategoryUpdateSerializer,
     FrontPageMenuItemSerializer,
+    CustomerCategorySerializer
 )
 from Vendor.models import vendor
 from Restaurant.models import Category, MenuItem, Restaurant
@@ -44,6 +45,19 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
+    
+    @api_view(['GET'])
+    def user_viewcategory(request,restaurant_id):
+        try:
+            restaurant = Restaurant.objects.get(id=restaurant_id)
+        except Restaurant.DoesNotExist:
+            return Response({'error': 'Restaurant not found'}, status=404)
+        
+        categories = Category.objects.filter(restaurant=restaurant)
+        serializer=CustomerCategorySerializer(categories, many=True)
+
+        return Response(serializer.data)
+        
 
     @action(detail=False, methods=['POST'])
     def create_category(self, request):
@@ -99,9 +113,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class MenuItemViewSet(viewsets.ModelViewSet):
     
     @api_view(['GET'])
-    def get_menu_items(request, restaurant_name):
+    def get_menu_items(request, restaurant_id):
         try:
-            restaurant = Restaurant.objects.get(name=restaurant_name)
+            restaurant = Restaurant.objects.get(id=restaurant_id)
         except Restaurant.DoesNotExist:
             return Response({'error': 'Restaurant not found'}, status=404)
 
@@ -150,7 +164,7 @@ class MenuItemViewSet(viewsets.ModelViewSet):
         
     
     @action(detail=False, methods=['POST'])   
-    def create_menuitem(self, request, category_id):
+    def create_menuitem(self, request):
     
         token = request.COOKIES.get('jwt')
 
@@ -163,17 +177,28 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             raise AuthenticationFailed('User is not authenticated')
         
         Vendor = vendor.objects.get(id=payload['id'])
-        Mrestaurant = Vendor.restaurant
-        Mcategory = request.data.get('category_id')
-        category = get_object_or_404(Category, id=Mcategory, restaurant= Mrestaurant)
+        Vrestaurant = Vendor.restaurant
+        Mcategory = request.data.get('category')
+        try:
+           category = Category.objects.get(id=Mcategory, restaurant=Vrestaurant)
+        except Category.DoesNotExist:
+            Response("Category not found for the specified restaurant.")
+   
+        request.data['category'] = Mcategory
+        request.data['owner'] = Vendor.id
+        request.data['restaurant'] = Vrestaurant.id            
+
         serializer = SuperuserMenuItemSerializer(data=request.data)
 
-        if Vendor.restaurant == Mrestaurant:
-
-            serializer.save(category=category, owner=Vendor, restaurant = Mrestaurant)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            raise PermissionDenied("Permission denied: You are not the owner of this object.")
+        if Vendor.restaurant == Vrestaurant:
+            
+            if serializer.is_valid():
+                serializer.save(category=category, owner=Vendor, restaurant = Vrestaurant)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                print(serializer.errors)
+                return Response("You are not provided enough data.")
+        raise PermissionDenied("Permission denied: You are not the owner of this object.")
 
 
     @action(detail=True, methods=['PUT','PATCH'])
