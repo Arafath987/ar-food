@@ -15,7 +15,7 @@ staticfiles/
 # Virtual environment
 venv/
 .env
-Dining
+
 
 # IDE files
 .vscode/
