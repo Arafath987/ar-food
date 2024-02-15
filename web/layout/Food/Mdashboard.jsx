@@ -1,4 +1,4 @@
-import { Flex, Button, Circle } from "@chakra-ui/react";
+import { Flex, Button, WrapItem, Avatar } from "@chakra-ui/react";
 import { HiClipboardList, HiUserCircle } from "react-icons/Hi";
 import { BiLogOutCircle } from "react-icons/bi";
 import { IoFastFoodSharp } from "react-icons/io5";
@@ -19,7 +19,13 @@ export const Mdashboard = () => {
       alignItems="center"
       borderLeftRadius="20px"
     >
-      <Circle mt="30px" bgColor="red" width="100px" height="100px"></Circle>
+      <WrapItem>
+        <Avatar
+          size='lg'
+          name='Prosper Otemuyiwa'
+          src='https://bit.ly/prosper-baba'
+        />
+      </WrapItem>
       <Button mt="40px" width="50px" height="50px">
         <Link href="/manager/orderlist">
           <HiClipboardList size="40px"></HiClipboardList>
@@ -33,7 +39,7 @@ export const Mdashboard = () => {
       </Button>
 
       <Button mt="20px" width="50px" height="50px">
-        <Link href="/manager/food_item">
+        <Link href="/manager/add">
           <IoFastFoodSharp size="40px"></IoFastFoodSharp>
         </Link>
       </Button>

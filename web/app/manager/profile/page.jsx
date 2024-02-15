@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Button, Heading, Card, Circle } from "@chakra-ui/react";
+import {  Flex, Button, Heading,WrapItem,Avatar} from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
 
 const page = () => {
@@ -12,16 +12,14 @@ const page = () => {
         marginTop="100px"
         padding="10px"
         width="30%"
-        justifyContent="flex-start"
         flexDirection="column"
         backgroundColor="#31A5A5"
         height="600px"
-        alignItems="flex-start"
+        alignItems="center"
         borderRightRadius="20px"
       >
         <Heading
-          marginLeft="10%"
-          marginTop="30px"
+        textAlign="center"
           size="50px"
           fontSize="30px"
           fontWeight="bold"
@@ -35,12 +33,13 @@ const page = () => {
           alignItems="center"
           justifyItems="center"
         >
-          <Circle
-            marginTop="30px"
-            bgColor="red"
-            height="200px"
-            width="200px"
-          ></Circle>
+          <WrapItem>
+        <Avatar
+          size='2xl'
+          name='Prosper Otemuyiwa'
+          src='https://bit.ly/prosper-baba'
+        />
+      </WrapItem>
           <Heading
             marginTop="30px"
             size="50px"
@@ -52,7 +51,7 @@ const page = () => {
           <Button
             width="50%"
             height="40px"
-            mt="20%"
+            mt="20px"
             borderRadius="10px"
             bgColor="white"
           >

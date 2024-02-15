@@ -6,7 +6,6 @@ export const OrderingCard = () => {
     <Card
       borderRadius="30px"
       padding="20px"
-      marginLeft="10%"
       width="80%"
       bgColor="#FFFFFF"
       marginTop="30px"

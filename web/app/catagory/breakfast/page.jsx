@@ -1,5 +1,5 @@
 "use client";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { FoodCard } from "../../../views/dashboard";
 
@@ -9,10 +9,15 @@ const page = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("https://fakestoreapi.com/products");
-      const data = await res.json();
-      setData(data);
-      setLoading(false);
+      try {
+        const res = await fetch("https://fakestoreapi.com/products");
+        const data = await res.json();
+        setData(data);
+      } catch {
+        console.log("ERROR")
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -21,7 +26,6 @@ const page = () => {
       <Flex
         width="100%"
         height="100%"
-        marginTop="-75px"
         bgColor="#31A5A5"
         flexWrap="wrap"
         alignItems="center"
@@ -31,7 +35,7 @@ const page = () => {
       >
         {!isLoading &&
           data.map((el) => (
-            <FoodCard name={el.title} price={el.id} image={el.image} id={el.id}/>
+            <FoodCard name={el.title} price={el.id} image={el.image} id={el.id} />
           ))}
         {isLoading && <h1>Loading</h1>}
       </Flex>
