@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Card, Box, Flex, Button, Image } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { CartContext } from "app/context/Product";
+import { CartContext } from "../../context/Product";
+import { CartIcon } from "../../views/dashboard";
 
 const page = () => {
   const [data, setData] = useState();
@@ -30,6 +31,9 @@ const page = () => {
   return (
     <div>
       <Card borderRadius="40px" bgColor="white" border="red" borderWidth="2px">
+        <Flex ml="85%">
+          <CartIcon></CartIcon>
+        </Flex>
         <Box
           height="200px"
           display="flex"

@@ -5,7 +5,7 @@ import React from "react";
 export const Navbar = () => {
   return (
     <Flex
-      spacebetween="center"
+      justifyContent="space-between"
       borderTopLeftRadius="60px"
       bgColor="#31A5A5"
       width="100%"
@@ -15,9 +15,8 @@ export const Navbar = () => {
       <Box>
         <Heading
           marginLeft="20px"
-          lineHeight="40px"
-          fontSize="25px"
-          fontWeight="light"
+          fontSize=""
+          fontWeight="normel"
           color="#000000"
         >
           <Link href="/">All</Link>
@@ -25,39 +24,38 @@ export const Navbar = () => {
       </Box>
 
       <Heading
-        marginLeft="20px"
-        width="260px"
-        lineHeight="40px"
-        fontSize="2xl"
+        marginLeft="3%"
+        width="20%"
+        fontSize=""
         fontWeight="light"
         color="#000000"
       >
         <Link href="/catagory/breakfast">Breakfast</Link>
       </Heading>
       <Heading
-        marginLeft="20px"
-        width="260px"
-        lineHeight="40px"
-        fontSize="2xl"
+        marginLeft="1%"
+        width="15%"
+        lineHeight="20px"
+        fontSize=""
         fontWeight="light"
         color="#000000"
       >
         <Link href="/catagory/lunch">Lunch</Link>
       </Heading>
       <Heading
-        marginLeft="20px"
-        width="260px"
-        lineHeight="40px"
-        fontSize="2xl"
-        fontWeight="light"
+        marginLeft="1%"
+        width="15%"
+        lineHeight="20px"
+        fontSize=""
+        fontWeight="normel"
         color="#000000"
       >
         <Link href="/catagory/dinner">Dinner</Link>
       </Heading>
       <Heading
         marginLeft="20px"
-        width="260px"
-        lineHeight="40px"
+        width="15%"
+        lineHeight="20px"
         fontSize=""
         fontWeight="normel"
         color="#000000"

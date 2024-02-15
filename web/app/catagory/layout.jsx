@@ -6,11 +6,11 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+
 import { BsSearch } from "react-icons/bs";
 import { Input } from "@chakra-ui/react";
-import { Navbar } from "app/layout/Food/Navbar";
-import Link from "next/link";
+import { Navbar } from "../../layout/Food/Navbar";
+import { CartIcon } from "../../views/dashboard";
 
 const DashLayout = ({ children }) => {
   return (
@@ -48,22 +48,7 @@ const DashLayout = ({ children }) => {
             />
           </InputGroup>
         </Box>
-        <Flex
-          marginTop="10px"
-          justifyContent="center"
-          alignItems="center"
-          width="45px"
-          height="45px"
-          boxShadow="dark-lg"
-          rounded="md"
-          borderColor="#00000040"
-          borderWidth="2px"
-          borderRadius="10px"
-        >
-          <Link href="/cart">
-            <MdOutlineProductionQuantityLimits size="25px" />
-          </Link>
-        </Flex>
+        <CartIcon></CartIcon>
       </Flex>
       <Navbar />
 

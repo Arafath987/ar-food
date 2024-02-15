@@ -9,11 +9,13 @@ import {
   CircularProgress,
 } from "@chakra-ui/react";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import Link from "next/link";
 import { BsSearch } from "react-icons/bs";
 import { Input } from "@chakra-ui/react";
 import { FoodCard } from "../views/dashboard";
 import { useEffect, useState } from "react";
 import { Navbar } from "../layout/Food/Navbar";
+import { CartIcon } from "../views/dashboard";
 
 const page = () => {
   const [data, setData] = useState([]);
@@ -63,20 +65,7 @@ const page = () => {
             />
           </InputGroup>
         </Box>
-        <Flex
-          marginTop="10px"
-          justifyContent="center"
-          alignItems="center"
-          width="45px"
-          height="45px"
-          boxShadow="dark-lg"
-          rounded="md"
-          borderColor="#00000040"
-          borderWidth="2px"
-          borderRadius="10px"
-        >
-          <MdOutlineProductionQuantityLimits size="25px" />
-        </Flex>
+        <CartIcon></CartIcon>
       </Flex>
       <Navbar />
       <Flex
@@ -87,7 +76,7 @@ const page = () => {
         flexWrap="wrap"
         alignItems="center"
         justifyContent="center"
-        flexDirection={{ base: "column", md: "row" }}
+        flexDirection={{ base: "row", md: "row" }}
         gap="5px"
       >
         {!isLoading &&
