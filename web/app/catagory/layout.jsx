@@ -2,7 +2,7 @@ import React from "react";
 import {
   Box,
   Flex,
-  Heading,
+  Heading
 
 } from "@chakra-ui/react";
 import { Navbar } from "../../layout/Food/Navbar";
