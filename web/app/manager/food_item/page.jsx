@@ -27,37 +27,73 @@ const page = () => {
         bgColor="white"
         borderRadius="50px"
       >
-        <Flex width="100%" bgColor="red" height="15%">
+        <Flex width="100%" bgColor="" height="15%">
           <Heading ml="4%" mt="5%">
             Add Item
           </Heading>
         </Flex>
-        <Flex width="100%" height="100%">
-          <FormControl>
-            <Flex flexDirection="column" height="100%" width="50%">
-              <Box mt="5%" bgColor="gray">
-                <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+
+        <FormControl>
+          <Flex FlexDirection="row" ml="4%" width="100%" height="100%">
+            <Flex flexDirection="column" height="100%" width="45%">
+              <Box mt="5%" bgColor="#EAEAEA">
+                <FormLabel>Item Name</FormLabel>
+                <Input type="string" />
               </Box>
 
-              <Box mt="5%" bgColor="gray">
-                <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+              <Box mt="5%" bgColor="#EAEAEA">
+                <FormLabel>Price</FormLabel>
+                <Input type="number" />
               </Box>
 
-              <Box mt="5%" bgColor="gray">
-                <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+              <Box mt="5%" bgColor="#EAEAEA">
+                <FormLabel>Category</FormLabel>
+                <Input type="string" />
               </Box>
 
-              <Box mt="5%" bgColor="gray">
-                <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+              <Box mt="5%" bgColor="#EAEAEA">
+                <FormLabel>Discription</FormLabel>
+                <Input height="100%" type="text" />
+              </Box>
+              <Button
+                width="70%"
+                height="40px"
+                mt="15%"
+                ml="15%"
+                boxShadow="dark-lg"
+                rounded="md"
+                borderColor="#00000040"
+                borderWidth="2px"
+                borderRadius="10px"
+                bgColor="white"
+              >
+                Back
+              </Button>
+            </Flex>
+            <Flex
+              flexDirection="column"
+              ml="4%"
+              bgColor=""
+              height="100%"
+              width="45%"
+            >
+              <Box mt="5%" bgColor="#EAEAEA">
+                <FormLabel>Prepration Time</FormLabel>
+                <Input type="number" />
+              </Box>
+
+              <Box mt="5%" bgColor="#EAEAEA">
+                <FormLabel>Add Image</FormLabel>
+                <Input type="file" />
+              </Box>
+
+              <Box mt="5%" bgColor="#EAEAEA">
+                <FormLabel>Add 3d Image</FormLabel>
+                <Input type="file" />
               </Box>
             </Flex>
-            <Flex height="100%" width="50%"></Flex>
-          </FormControl>
-        </Flex>
+          </Flex>
+        </FormControl>
       </Flex>
     </Flex>
   );
