@@ -23,9 +23,9 @@ const page = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("https://fakestoreapi.com/products");
+      const res = await fetch("http://127.0.0.1:8000/api/get-menu-items/2");
       const data = await res.json();
-      setData(data);
+      setData(data.menu_items);
       setLoading(false);
     })();
   }, []);
@@ -82,8 +82,8 @@ const page = () => {
         {!isLoading &&
           data.map((el) => (
             <FoodCard
-              name={el.title}
-              price={el.id}
+              name={el.name}
+              price={el.price}
               image={el.image}
               id={el.id}
             />

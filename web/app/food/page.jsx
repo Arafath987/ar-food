@@ -16,7 +16,7 @@ const page = () => {
   useEffect(() => {
     (async () => {
       const res = await fetch(
-        `https://fakestoreapi.com/products/${params.get("id")}`
+        `http://127.0.0.1:8000/api/menuitems/detail/${params.get("id")}`
       );
       const data = await res.json();
       setData(data);
@@ -40,10 +40,10 @@ const page = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <Image src={data.image} height="200" width="400" />
+          { <Image src={data.image} height="200" width="400" /> }
         </Box>
         <Box border="1px solid black" pl="30px">
-          <h4>{data.title}</h4>
+          <h4>{data.name}</h4>
           <h4>Price : {data.price}$</h4>
         </Box>
         <Flex
