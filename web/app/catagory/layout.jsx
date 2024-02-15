@@ -6,7 +6,6 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-
 import { BsSearch } from "react-icons/bs";
 import { Input } from "@chakra-ui/react";
 import { Navbar } from "../../layout/Food/Navbar";
