@@ -7,6 +7,11 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
 
+class CustomerCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id','name']
+
 class CategoryUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -16,24 +21,24 @@ class FrontPageMenuItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MenuItem
-        fields = ['name', 'price', 'image','time','rating']
+        fields = ['id','name', 'price', 'image','time','rating', 'category', 'restaurant']
 
 class CustomerMenuItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MenuItem
-        fields = ['name', 'description', 'price', 'image','time','rating']
+        fields = ['id','name', 'description', 'price', 'image','time','rating','category', 'restaurant']
 
 class SuperuserMenuItemSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
 
     class Meta:
         model = MenuItem
-        fields = ['name', 'description', 'price', 'rating', 'is_available', 'time']
+        fields = ['id','name', 'description','category', 'price','time','owner','restaurant']
 
 
 class MenuItemUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuItem
-        fields = ['name', 'description', 'price', 'category', 'is_available', 'image', 'time']
+        fields = ['id','name', 'description', 'price', 'category', 'is_available', 'image', 'time']
                   
