@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useContext } from "react";
-import { Card, Box, Flex, Button, Image } from "@chakra-ui/react";
+import { Card, Box, Flex, Button, Image,Text } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { CartContext } from "../../context/Product";
 import { CartIcon } from "../../views/dashboard";
+import { BsClock } from "react-icons/bs";
+import { FaStar } from "react-icons/fa";
 
 const page = () => {
   const [data, setData] = useState();
@@ -42,9 +44,15 @@ const page = () => {
         >
           { <Image src={data.description} mt="10%" height="250px" width="100%" /> }
         </Box>
-        <Box mt="11%" border="1px solid black" pl="30px">
-          <h2>Price : ₹{data.price}</h2>
+        <Flex mt="20%" justifyContent="space-around">
+        <Box>
+          <Text >{data.name}</Text>
         </Box>
+        <Box>
+        <Text color="red"><Flex padding="3px" flexDirection="row"><FaStar></FaStar>{data.rating}</Flex></Text>
+        <Text color="green"><Flex flexDirection="row"><BsClock />{data.time}</Flex></Text>
+        </Box>
+       </Flex>
         <Flex
           justifyContent="center"
           alignItems="center"

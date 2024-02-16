@@ -28,14 +28,15 @@ const page = () => {
         height="100%"
         bgColor="#31A5A5"
         flexWrap="wrap"
+        mt="-75px"
         alignItems="center"
         justifyContent="center"
-        flexDirection={{ base: "column", md: "row" }}
+        flexDirection={{ base: "row", md: "row" }}
         gap="5px"
       >
         {!isLoading &&
           data.map((el) => (
-            <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} />
+            <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} rating={el.rating} time={el.time} />
           ))}
         {isLoading && <h1>Loading</h1>}
       </Flex>

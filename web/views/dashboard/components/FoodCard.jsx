@@ -1,5 +1,6 @@
 import { Text, Card, Image,Flex,Box } from "@chakra-ui/react";
 import { BsClock } from "react-icons/bs";
+import { FaStar } from "react-icons/fa";
 import Link from "next/link";
 
 export const FoodCard = ({ name, price, image, id,rating,time }) => {
@@ -21,7 +22,7 @@ export const FoodCard = ({ name, price, image, id,rating,time }) => {
           <Text color="gray">₹{price}</Text>
         </Box>
         <Box>
-        <Text color="red"><Flex padding="3px" flexDirection="row"><BsClock  />{rating}</Flex></Text>
+        <Text color="red"><Flex padding="3px" flexDirection="row"><FaStar />{rating}</Flex></Text>
         <Text color="green"><Flex flexDirection="row"><BsClock />{time}</Flex></Text>
         </Box>
           
