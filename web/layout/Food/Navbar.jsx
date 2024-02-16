@@ -8,8 +8,7 @@ export const Navbar = () => {
       justifyContent="space-between"
       borderTopLeftRadius="60px"
       bgColor="#31A5A5"
-      width="100%"
-      height="150px"
+      height="20vh"
       padding="20px"
     >
       <Box>

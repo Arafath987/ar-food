@@ -2,8 +2,11 @@
 
 import {  Flex, Button, Heading,WrapItem,Avatar} from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
+import {AuthContext } from "../../../context/Auth"
+import { useContext } from "react";
 
 const page = () => {
+  const { user } = useContext(AuthContext)
   return (
     <Flex>
       <Mdashboard />
@@ -46,7 +49,15 @@ const page = () => {
             fontSize="30px"
             fontWeight="bold"
           >
-            name
+            {user?.username}
+          </Heading>
+          <Heading
+            marginTop="30px"
+            size="50px"
+            fontSize="30px"
+            fontWeight="bold"
+          >
+            {user?.email}
           </Heading>
           <Button
             width="50%"

@@ -4,7 +4,8 @@ import { BsSearch } from "react-icons/bs"
 
 export const Search = () => {
     return (
-        <InputGroup>
+       <div>
+         <InputGroup>
             <InputLeftElement mr="30px" pointerEvents="none">
                 <BsSearch size="20px" color="#D9D9D9" />
             </InputLeftElement>
@@ -20,6 +21,7 @@ export const Search = () => {
                 placeholder="search"
             />
         </InputGroup>
+       </div>
     )
 }
 

@@ -1,6 +1,6 @@
 "use client";
-const { createContext, useState } = require("react");
-import {apiHandler} from "../handler"
+const { createContext, useState, useEffect } = require("react");
+import { apiHandler } from "../handler"
 import { useRouter } from 'next/navigation'
 import { useToast } from "@chakra-ui/react";
 
@@ -10,25 +10,27 @@ export const AuthContext = createContext(null);
 export const AuthContextProvider = ({ children }) => {
   const toast = useToast();
   const router = useRouter()
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
 
-  const getUser = async()=>{
-    const {data} = await apiHandler("/api/user_profile")
+  const getUser = async () => {
+    const { data } = await apiHandler("/api/user_profile")
     setUser(data)
   }
 
+  useEffect(()=>{
+     getUser()
+  },[])
 
   const login = async (email, password) => {
     try {
-      const { data } = await apiHandler.post("/api/login", {
+      // to get the cookie
+      await apiHandler.post("/api/login", {
         email,
         password,
       });
-      setUser(data)
-      console.log(data.jwt)
-      await getUser(data.jwt)
+      await getUser()
       router.push("/manager/orderlist")
-      
+
       toast({
         title: "Account created.",
         description: "We've created your account for you.",
@@ -47,7 +49,7 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  const logOut = async () => {};
+  const logOut = async () => { };
 
   const value = {
     login,
