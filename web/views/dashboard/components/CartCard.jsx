@@ -13,17 +13,17 @@ export const CartCard = ({ image, name, price }) => {
       bgColor="#FFFFFF"
       height="120px"
     >
-      <Box ml="20px">
-        <Image src={image} height="100" width="200" />
+      <Box >
+        <Image src={image} height="100px" width="200" />
       </Box>
       <Box>
-        <Heading>{name}</Heading>
+        <Heading fontSize="20px" >{name}</Heading>
       </Box>
       <Box>
-        <Heading>x 2</Heading>
+        <Heading fontSize="20px">x 1</Heading>
       </Box>
       <Box mr="20px">
-        <Heading>{price}</Heading>
+        <Heading fontSize="20px">₹{price}</Heading>
       </Box>
     </Card>
   );

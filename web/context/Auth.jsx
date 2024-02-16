@@ -1,23 +1,34 @@
 "use client";
 const { createContext, useState } = require("react");
-import axios from "axios";
+import {apiHandler} from "../handler"
+import { useRouter } from 'next/navigation'
 import { useToast } from "@chakra-ui/react";
 
-const endPoint = process.env.NEXT_PUBLIC_API_BASE;
 
 export const AuthContext = createContext(null);
 
 export const AuthContextProvider = ({ children }) => {
   const toast = useToast();
+  const router = useRouter()
   const [user, setUser] = useState({});
+
+  const getUser = async()=>{
+    const {data} = await apiHandler("/api/user_profile")
+    setUser(data)
+  }
+
 
   const login = async (email, password) => {
     try {
-      const { data } = axios.post(endPoint + "/api/login", {
+      const { data } = await apiHandler.post("/api/login", {
         email,
         password,
       });
-
+      setUser(data)
+      console.log(data.jwt)
+      await getUser(data.jwt)
+      router.push("/manager/orderlist")
+      
       toast({
         title: "Account created.",
         description: "We've created your account for you.",
@@ -34,7 +45,6 @@ export const AuthContextProvider = ({ children }) => {
         isClosable: true,
       });
     }
-    console.log(data);
   };
 
   const logOut = async () => {};

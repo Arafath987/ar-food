@@ -1,7 +1,9 @@
-import { Text, Card, Image } from "@chakra-ui/react";
+import { Text, Card, Image,Flex,Box } from "@chakra-ui/react";
+import { BsClock } from "react-icons/bs";
+import { FaStar } from "react-icons/fa";
 import Link from "next/link";
 
-export const FoodCard = ({ name, price, image, id }) => {
+export const FoodCard = ({ name, price, image, id,rating,time }) => {
   return (
     <Link href={`/food/?id=${id}`}>
       <Card
@@ -13,9 +15,20 @@ export const FoodCard = ({ name, price, image, id }) => {
         border="red"
         borderWidth="2px"
       >
-        <Image src={image} w="100px" height="100px" m="15px" />
-        <Text className="">{name}</Text>
-        <Text color="red">{price}</Text>
+        <Image src={image} w="100%" height="180px"  />
+       <Flex justifyContent="space-around">
+        <Box>
+          <Text >{name}</Text>
+          <Text color="gray">₹{price}</Text>
+        </Box>
+        <Box>
+        <Text color="red"><Flex padding="3px" flexDirection="row"><FaStar />{rating}</Flex></Text>
+        <Text color="green"><Flex flexDirection="row"><BsClock />{time}</Flex></Text>
+        </Box>
+          
+  
+       </Flex>
+
       </Card>
     </Link>
   );

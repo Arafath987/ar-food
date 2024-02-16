@@ -1,7 +1,8 @@
 "use client";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { FoodCard } from "../../../views/dashboard";
+import { apiHandler } from "../../../handler";
 
 const page = () => {
   const [data, setData] = useState([]);
@@ -9,10 +10,14 @@ const page = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("https://fakestoreapi.com/products");
-      const data = await res.json();
-      setData(data);
-      setLoading(false);
+      try {
+        const {data} = await apiHandler.get("/api/get-menu-items/1")
+        setData(data.menu_items);
+      } catch {
+        console.log("ERROR")
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -21,17 +26,17 @@ const page = () => {
       <Flex
         width="100%"
         height="100%"
-        marginTop="-75px"
         bgColor="#31A5A5"
         flexWrap="wrap"
+        mt="-75px"
         alignItems="center"
         justifyContent="center"
-        flexDirection={{ base: "column", md: "row" }}
+        flexDirection={{ base: "row", md: "row" }}
         gap="5px"
       >
         {!isLoading &&
           data.map((el) => (
-            <FoodCard name={el.title} price={el.id} image={el.image} id={el.id}/>
+            <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} rating={el.rating} time={el.time} />
           ))}
         {isLoading && <h1>Loading</h1>}
       </Flex>

@@ -10,6 +10,7 @@ const dbConfig = {
   password: "postgres",
 };
 
+
 // Initialize the database
 const db = pgp(dbConfig);
 
@@ -19,7 +20,7 @@ async function populateDummyData() {
     // Insert dummy data for Restaurant
     const restaurants = await db.query(
       "INSERT INTO restaurant (owner, name) VALUES ($1, $2) RETURNING *",
-      [1, faker.company.companyName()]
+      [1, faker.company.name]
     );
 
     // Insert dummy data for Category

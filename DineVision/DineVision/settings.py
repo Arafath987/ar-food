@@ -28,6 +28,10 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Replace with your frontend's localhost address
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -81,9 +85,9 @@ WSGI_APPLICATION = "DineVision.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "DineVision",
-        "USER": "ar_menu_project",
-        "PASSWORD": "armenu",
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
         "HOST": "localhost",
         "PORT": 5432,
     }

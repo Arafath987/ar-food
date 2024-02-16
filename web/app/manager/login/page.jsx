@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -24,17 +25,27 @@ const App = () => {
   };
 
   return (
+    <Flex
+    width="100%"
+    justifyContent="center"
+    alignItems="center"
+    
+    >
     <Container
+      mt="6%"
+      ml="58%"
       maxW="lg"
       py={{ base: "12", md: "24" }}
       px={{ base: "0", sm: "8" }}
       backgroundColor="white"
+      borderRadius="20px"
     >
       <Stack spacing="8">
         <Stack spacing="6">
-          <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
+          <Stack spacing={{ base: "2", md: "3" }} textAlign="start">
             <Heading size={{ base: "xs", md: "sm" }}>
-              Log in to your account
+              <Heading fontWeight="20px">Log in </Heading> <br />
+              to get started
             </Heading>
           </Stack>
         </Stack>
@@ -58,12 +69,17 @@ const App = () => {
               </FormControl>
             </Stack>
             <Stack spacing="6">
-              <Button onClick={handleLogin}>log in</Button>
+              <Button bgColor="#31A5A5" onClick={handleLogin}>
+                Continue
+              </Button>
             </Stack>
           </Stack>
         </Box>
       </Stack>
     </Container>
+
+    </Flex>
+   
   );
 };
 

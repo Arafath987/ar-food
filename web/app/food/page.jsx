@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useContext } from "react";
-import { Card, Box, Flex, Button, Image } from "@chakra-ui/react";
+import { Card, Box, Flex, Button, Image,Text } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { CartContext } from "../../context/Product";
 import { CartIcon } from "../../views/dashboard";
+import { BsClock } from "react-icons/bs";
+import { FaStar } from "react-icons/fa";
 
 const page = () => {
   const [data, setData] = useState();
@@ -40,12 +42,17 @@ const page = () => {
           justifyContent="center"
           alignItems="center"
         >
-          { <Image src={data.image} height="200" width="400" /> }
+          { <Image src={data.description} mt="10%" height="250px" width="100%" /> }
         </Box>
-        <Box border="1px solid black" pl="30px">
-          <h4>{data.name}</h4>
-          <h4>Price : {data.price}$</h4>
+        <Flex mt="20%" justifyContent="space-around">
+        <Box>
+          <Text >{data.name}</Text>
         </Box>
+        <Box>
+        <Text color="red"><Flex padding="3px" flexDirection="row"><FaStar></FaStar>{data.rating}</Flex></Text>
+        <Text color="green"><Flex flexDirection="row"><BsClock />{data.time}</Flex></Text>
+        </Box>
+       </Flex>
         <Flex
           justifyContent="center"
           alignItems="center"
@@ -63,16 +70,7 @@ const page = () => {
           >
             Add to cart
           </Button>
-          <Button
-            marginTop="10px"
-            bgColor="#31A5A5"
-            borderRadius="30px"
-            height="55px"
-            color="white"
-            width="220px"
-          >
-            Buy Now
-          </Button>
+      
         </Flex>
       </Card>
     </div>

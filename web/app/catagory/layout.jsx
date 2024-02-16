@@ -2,15 +2,12 @@ import React from "react";
 import {
   Box,
   Flex,
-  Heading,
-  InputGroup,
-  InputLeftElement,
-} from "@chakra-ui/react";
+  Heading
 
-import { BsSearch } from "react-icons/bs";
-import { Input } from "@chakra-ui/react";
+} from "@chakra-ui/react";
 import { Navbar } from "../../layout/Food/Navbar";
 import { CartIcon } from "../../views/dashboard";
+import { Search } from "../../views/common/Search"
 
 const DashLayout = ({ children }) => {
   return (
@@ -27,31 +24,16 @@ const DashLayout = ({ children }) => {
           fontStyle="normal"
           fontSize="20px"
           marginLeft="25px"
+          mt={5}
         >
-          Menu{" "}
+          Menu
         </Heading>
-        <Box marginLeft="-30px" marginTop="50px">
-          <InputGroup>
-            <InputLeftElement mr="30px" pointerEvents="none">
-              <BsSearch size="30px" color="#D9D9D9" />
-            </InputLeftElement>
-            <Input
-              borderTop="2px"
-              borderLeft="1px"
-              borderRight="1px"
-              borderWidth="3px"
-              borderColor="#D9D9D9"
-              width="300px"
-              height="40px"
-              type="search"
-              placeholder="&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;search"
-            />
-          </InputGroup>
+        <Box marginTop="50px">
+          <Search />
         </Box>
-        <CartIcon></CartIcon>
+        <CartIcon />
       </Flex>
       <Navbar />
-
       {children}
     </div>
   );
