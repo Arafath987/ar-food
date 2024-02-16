@@ -40,11 +40,10 @@ const page = () => {
           justifyContent="center"
           alignItems="center"
         >
-          { <Image src={data.image} height="200" width="400" /> }
+          { <Image src={data.description} mt="10%" height="250px" width="100%" /> }
         </Box>
-        <Box border="1px solid black" pl="30px">
-          <h4>{data.name}</h4>
-          <h4>Price : {data.price}$</h4>
+        <Box mt="11%" border="1px solid black" pl="30px">
+          <h2>Price : ₹{data.price}</h2>
         </Box>
         <Flex
           justifyContent="center"
@@ -63,16 +62,7 @@ const page = () => {
           >
             Add to cart
           </Button>
-          <Button
-            marginTop="10px"
-            bgColor="#31A5A5"
-            borderRadius="30px"
-            height="55px"
-            color="white"
-            width="220px"
-          >
-            Buy Now
-          </Button>
+      
         </Flex>
       </Card>
     </div>

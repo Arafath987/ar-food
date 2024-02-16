@@ -20,7 +20,7 @@ export const CartCard = ({ image, name, price }) => {
         <Heading>{name}</Heading>
       </Box>
       <Box>
-        <Heading>x 2</Heading>
+        <Heading>x 1</Heading>
       </Box>
       <Box mr="20px">
         <Heading>{price}</Heading>

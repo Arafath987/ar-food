@@ -37,7 +37,7 @@ const page = () => {
       )}
 
       {cart.length > 0 &&
-        cart.map((el) => <CartCard image={el.image} price={el.price} />)}
+        cart.map((el) => <CartCard name={el.name} image={el.image} price={el.price} />)}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Container,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -24,8 +25,14 @@ const App = () => {
   };
 
   return (
+    <Flex
+    width="100%"
+    justifyContent="center"
+    alignItems="center"
+    
+    >
     <Container
-      mt="8%"
+      mt="6%"
       ml="58%"
       maxW="lg"
       py={{ base: "12", md: "24" }}
@@ -70,6 +77,9 @@ const App = () => {
         </Box>
       </Stack>
     </Container>
+
+    </Flex>
+   
   );
 };
 

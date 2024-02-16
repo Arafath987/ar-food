@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import { FoodCard } from "../../../views/dashboard";
+import { apiHandler } from "../../../handler";
 
 const page = () => {
   const [data, setData] = useState([]);
@@ -10,9 +11,8 @@ const page = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("https://fakestoreapi.com/products");
-        const data = await res.json();
-        setData(data);
+        const {data} = await apiHandler.get("/api/get-menu-items/1")
+        setData(data.menu_items);
       } catch {
         console.log("ERROR")
       } finally {
@@ -35,7 +35,7 @@ const page = () => {
       >
         {!isLoading &&
           data.map((el) => (
-            <FoodCard name={el.title} price={el.id} image={el.image} id={el.id} />
+            <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} />
           ))}
         {isLoading && <h1>Loading</h1>}
       </Flex>

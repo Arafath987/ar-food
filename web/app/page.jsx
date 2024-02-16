@@ -4,18 +4,16 @@ import {
   Box,
   Flex,
   Heading,
-  InputGroup,
-  InputLeftElement,
   CircularProgress,
   useToast
 } from "@chakra-ui/react";
-import { BsSearch } from "react-icons/bs";
-import { Input } from "@chakra-ui/react";
 import { FoodCard } from "../views/dashboard";
 import { useEffect, useState } from "react";
 import { Navbar } from "../layout/Food/Navbar";
 import { Search} from "../views/common/Search"
 import { CartIcon } from "../views/dashboard";
+import { apiHandler} from "../handler"
+
 
 const page = () => {
   const [data, setData] = useState([]);
@@ -25,8 +23,7 @@ const page = () => {
   useEffect(() => {
     (async () => {
     try{
-      const res = await fetch("http://127.0.0.1:8000/api/get-menu-items/2");
-      const data = await res.json();
+      const {data} = await apiHandler.get("/api/get-menu-items/1")
       setData(data.menu_items);
     }catch{
         toast({
@@ -79,8 +76,10 @@ const page = () => {
             <FoodCard
               name={el.name}
               price={el.price}
-              image={el.image}
+              image={el.description}
               id={el.id}
+              rating={el.rating}
+              time={el.time}
             />
           ))}
         {isLoading && (

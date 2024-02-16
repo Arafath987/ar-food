@@ -20,8 +20,8 @@ const page = () => {
         borderRightRadius="20px"
       >
 
-        <Tabs variant='soft-rounded' colorScheme='green' background="white" rounded="lg" w="80%">
-          <TabList display="flex" justifyContent="space-around" alignItems="center">
+        <Tabs variant='soft-rounded' colorScheme='green' background="white" rounded="lg" w="100%">
+          <TabList  display="flex" justifyContent="space-around" alignItems="center">
             <Tab w="full">New</Tab>
             <Tab w="full">Preparing</Tab>
             <Tab w="full">Delivered</Tab>
@@ -43,26 +43,30 @@ const page = () => {
             <TableCaption>Imperial to metric conversion factors</TableCaption>
             <Thead>
               <Tr>
-                <Th>Order Info</Th>
+                <Th>Item name</Th>
                 <Th>Preperation time</Th>
-                <Th>Table</Th>
+                <Th>Quantity</Th>
+                <Th>Price</Th>
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
-                <Td>inches</Td>
-                <Td>millimetres (mm)</Td>
-                <Td>25.4</Td>
+                <Td>biriyani</Td>
+                <Td>00:10:00</Td>
+                <Td>2</Td>
+                <Td rowSpan="2" >3</Td>
               </Tr>
               <Tr>
-                <Td>feet</Td>
-                <Td>centimetres (cm)</Td>
-                <Td >30.48</Td>
+                <Td>manthi</Td>
+                <Td>00:10:00</Td>
+                <Td  >3</Td>
+                
               </Tr>
               <Tr>
-                <Td>yards</Td>
-                <Td>metres (m)</Td>
-                <Td>0.91444</Td>
+                <Td>friedrice</Td>
+                <Td>00:10:00</Td>
+                <Td>2</Td>
+                <Td>2</Td>
               </Tr>
             </Tbody>
           </Table>
