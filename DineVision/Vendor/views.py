@@ -53,13 +53,13 @@ class LoginView(APIView):
 
         token = jwt.encode(payload, "your_secret_key", algorithm="HS256")
 
-        response = HttpResponse()
+        response = Response()
         response.set_cookie(
             key="jwt",
             value=token,
             httponly=False,
             samesite="None",
-            secure=False,
+            secure=True,
             path="/",
         )
         response.data = {"jwt": token, "user": payload}
@@ -79,7 +79,6 @@ class LogOutView(viewsets.ModelViewSet):
 class UserProfileView(viewsets.ModelViewSet):
 
     def get_userprofile(self, request):
-        print(request.COOKIES)
         token = request.COOKIES.get("jwt")
 
         if not token:

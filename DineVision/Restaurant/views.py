@@ -129,7 +129,6 @@ class MenuItemViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'])
     def by_category(self, request, category_id):
         try:
-            print(category_id)
             category= Category.objects.get(id=category_id)
         except:
             return Response({'error':'Restaurant not found'}, status=404)
