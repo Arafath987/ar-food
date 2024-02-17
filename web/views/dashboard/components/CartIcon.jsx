@@ -5,7 +5,7 @@ import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 export const CartIcon = () => {
   return (
     <Flex
-      marginTop="10px"
+      marginTop="-25%"
       justifyContent="center"
       alignItems="center"
       width="45px"

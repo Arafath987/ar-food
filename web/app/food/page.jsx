@@ -33,16 +33,19 @@ const page = () => {
   return (
     <div>
       <Card borderRadius="40px" bgColor="white" border="red" borderWidth="2px">
-        <Flex ml="85%">
-          <CartIcon></CartIcon>
-        </Flex>
+      <Flex ml="85%" mt="20px">
+              <CartIcon></CartIcon>
+      </Flex>
+        
         <Box
           height="200px"
           display="flex"
           justifyContent="center"
           alignItems="center"
         >
-          { <Image src={data.description} mt="10%" height="250px" width="100%" /> }
+           <Image src={data.description} mt="10%" height="250px" width="100%"  >
+            
+           </Image>
         </Box>
         <Flex mt="20%" justifyContent="space-around">
         <Box>

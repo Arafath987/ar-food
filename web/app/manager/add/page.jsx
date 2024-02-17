@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Box,
   Flex,
   Button,
   Heading,

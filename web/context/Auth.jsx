@@ -13,8 +13,14 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const getUser = async () => {
-    const { data } = await apiHandler("/api/user_profile")
-    setUser(data)
+    try {
+      const { data } = await apiHandler("/api/user_profile");
+      setUser(data);
+  } catch (error) {
+      console.log("Error :", error);
+
+  }
+  
   }
 
   useEffect(()=>{
@@ -32,8 +38,8 @@ export const AuthContextProvider = ({ children }) => {
       router.push("/manager/orderlist")
 
       toast({
-        title: "Account created.",
-        description: "We've created your account for you.",
+        title: "Account existed.",
+        description: "We've confirm your account existed.",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -49,7 +55,9 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  const logOut = async () => { };
+  const logOut = async () => { 
+    router.push("/login")
+  };
 
   const value = {
     login,

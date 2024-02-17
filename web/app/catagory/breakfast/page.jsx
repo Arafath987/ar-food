@@ -1,20 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex,Box,CircularProgress, useToast } from "@chakra-ui/react";
 import { FoodCard } from "../../../views/dashboard";
 import { apiHandler } from "../../../handler";
+import { Navbar } from "../../../layout/Food/Navbar";
 
 const page = () => {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const toast = useToast()
 
   useEffect(() => {
     (async () => {
       try {
-        const {data} = await apiHandler.get("/api/get-menu-items/1")
+        const { data } = await apiHandler.get("/api/get-menu-items/1")
         setData(data.menu_items);
       } catch {
-        console.log("ERROR")
+        toast({
+          title: "error getting data",
+          status: "error",
+          isClosable: true
+        })
       } finally {
         setLoading(false);
       }
@@ -22,13 +28,15 @@ const page = () => {
   }, []);
 
   return (
-    <div>
+
+
+
       <Flex
         width="100%"
-        height="100%"
         bgColor="#31A5A5"
         flexWrap="wrap"
-        mt="-75px"
+        mt="-75"
+        minHeight="70vh"
         alignItems="center"
         justifyContent="center"
         flexDirection={{ base: "row", md: "row" }}
@@ -38,9 +46,17 @@ const page = () => {
           data.map((el) => (
             <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} rating={el.rating} time={el.time} />
           ))}
-        {isLoading && <h1>Loading</h1>}
+          {isLoading && (
+            <Box
+              height="calc(100%-50px)"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <CircularProgress value={80} isIndeterminate />
+            </Box>
+          )}
       </Flex>
-    </div>
   );
 };
 

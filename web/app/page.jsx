@@ -39,11 +39,12 @@ const page = () => {
   return (
     <Box>
      <TopBar/>
-      <Box minH="100%">
+
         <Navbar />
         <Flex
           width="100%"
-          height="60vh"
+          minHeight="70vh"
+          mt="-75px"
           bgColor="#31A5A5"
           flexWrap="wrap"
           alignItems="center"
@@ -73,7 +74,7 @@ const page = () => {
             </Box>
           )}
         </Flex>
-      </Box>
+
     </Box>
   );
 };

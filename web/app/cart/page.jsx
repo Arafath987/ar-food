@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CartCard } from "../../views/dashboard";
 import { CartContext } from "../../context/Product";
 
+
 const page = () => {
   const { cart } = useContext(CartContext);
   return (
@@ -38,6 +39,17 @@ const page = () => {
 
       {cart.length > 0 &&
         cart.map((el) => <CartCard name={el.name} image={el.description} price={el.price} />)}
+        <Button
+            marginTop="75vh"
+            marginLeft="20vw"
+            bgColor="#31A5A5"
+            borderRadius="30px"
+            height="55px"
+            color="white"
+            width="220px"
+          >
+            order now
+          </Button>
     </div>
   );
 };
