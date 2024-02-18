@@ -20,12 +20,11 @@ const page = () => {
 
   console.log(errors)
 
-
   const onSubmit = async (data) => {
     try {
-      await apiHandler.post("/api/login", data);
+      await apiHandler.post("/api/", data);
 
-      console.log('Server response:', response.data);
+      console.log('data:', data);
       reset();
     } catch (error) {
       console.error('Error sending data to the backend:', error);
@@ -57,7 +56,7 @@ const page = () => {
                   id='name'
                   placeholder='Biriyani'
                   {...register('name', {
-                    required: 'This is required',
+                    required: 'Thi¯s is required',
                     minLength: { value: 4, message: 'Minimum length should be 4' },
                   })}
                 />

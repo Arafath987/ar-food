@@ -42,7 +42,9 @@ const page = () => {
         gap="5px"
       >
         {!isLoading &&
-          data.map((el) => (
+          data
+          .filter((el) => el.category === 2)
+          .map((el) => (
             <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} rating={el.rating} time={el.time} />
           ))}
           {isLoading && (

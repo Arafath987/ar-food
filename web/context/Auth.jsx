@@ -24,21 +24,21 @@ export const AuthContextProvider = ({ children }) => {
   }
 
 
-  useEffect(() => {
-    const initializeUser = async () => {
-      try {
-        await getUser();
-      } catch (error) {
-        console.log("Error :", error);
-      }
+  // useEffect(() => {
+  //   const initializeUser = async () => {
+  //     try {
+  //       await getUser();
+  //     } catch (error) {
+  //       console.log("Error :", error);
+  //     }
 
-      if (user && pathname === "/login") {
-        router.push("/manager/orderlist");
-      }
-    };
+  //     if (user && pathname === "/login") {
+  //       router.push("/manager/orderlist");
+  //     }
+  //   };
   
-    initializeUser();
-  }, []);
+  //   initializeUser();
+  // }, []);
   
 
   

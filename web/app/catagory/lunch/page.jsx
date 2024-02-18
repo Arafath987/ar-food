@@ -39,8 +39,10 @@ const page = () => {
         flexDirection={{ base: "row", md: "row" }}
         gap="5px"
       >
-        {!isLoading &&
-          data.map((el) => (
+         {!isLoading &&
+          data
+          .filter((el) => el.category === 1)
+          .map((el) => (
             <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} rating={el.rating} time={el.time} />
           ))}
              {isLoading && (
