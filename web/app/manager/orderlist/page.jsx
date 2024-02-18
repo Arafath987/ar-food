@@ -9,9 +9,23 @@ import { apiHandler } from "../../../handler";
 
 const page = () => {
   const [data, setData] = useState([]);
- 
   const toast = useToast()
-
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await apiHandler.get("/api/get-menu-items/1")
+        setData(data.menu_items);
+      } catch {
+        toast({
+          title: "error getting data",
+          status: "error",
+          isClosable: true
+        })
+      } finally {
+        console.log("data",data);
+      }
+    })();
+  }, []);
 
 
   return (
