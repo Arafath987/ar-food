@@ -1,10 +1,19 @@
 "use client";
 
-import { TabList, Tabs, Tab, Flex, Tbody, Tr, Td, Th, Table,  Thead, TableContainer, TableCaption } from "@chakra-ui/react";
+import { TabList, Tabs, Tab, Flex, Tbody, Tr, Td, Th, Table,  Thead, TableContainer, TableCaption,useToast } from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
 import { OrderingCard } from "../../../views/dashboard";
+import { useEffect, useState } from "react";
+import { apiHandler } from "../../../handler";
+
 
 const page = () => {
+  const [data, setData] = useState([]);
+ 
+  const toast = useToast()
+
+
+
   return (
     <Flex>
       <Mdashboard />

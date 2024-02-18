@@ -42,6 +42,7 @@ const page = () => {
 
         <Navbar />
         <Flex
+          minW="400px"
           width="100%"
           minHeight="70vh"
           mt="-75px"

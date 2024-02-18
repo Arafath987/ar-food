@@ -5,6 +5,7 @@ import React from "react";
 export const Navbar = () => {
   return (
     <Flex
+      minW="400px"
       justifyContent="space-between"
       borderTopLeftRadius="60px"
       bgColor="#31A5A5"
