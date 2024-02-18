@@ -1,6 +1,6 @@
 "use client";
 
-import { TabList, TabPanel, TabPanels, Tabs, Tab, Flex, Tbody, Tr, Td, Th, Table, Tfoot, Thead, TableContainer, TableCaption } from "@chakra-ui/react";
+import { TabList, Tabs, Tab, Flex, Tbody, Tr, Td, Th, Table,  Thead, TableContainer, TableCaption } from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
 import { OrderingCard } from "../../../views/dashboard";
 

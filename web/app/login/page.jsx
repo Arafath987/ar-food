@@ -11,20 +11,28 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../context/Auth";
+import {useRouter} from "next/navigation"
 
 const url = "https://digital-photography-school.com/wp-content/uploads/2024/01/food-photography-styling-107.jpg"
 
 const App = () => {
   const email = useRef(null);
   const password = useRef(null);
+  const router = useRouter()
 
-  const { login } = useContext(AuthContext);
+  const { login ,user} = useContext(AuthContext);
 
   const handleLogin = () => {
     login(email.current.value, password.current.value);
   };
+
+  useEffect(()=>{
+    if(user){
+      router.push("/")
+    }
+  },[])
 
   return (
     <Flex

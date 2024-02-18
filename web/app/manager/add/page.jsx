@@ -50,7 +50,7 @@ const page = () => {
                   id='name'
                   placeholder='Biriyani'
                   {...register('name', {
-                    required: 'Thi¯s is required',
+                    required: 'This is required',
                     minLength: { value: 4, message: 'Minimum length should be 4' },
                   })}
                 />
