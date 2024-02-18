@@ -14,15 +14,22 @@ import { useForm } from "react-hook-form";
 
 
 const page = () => {
-  const { handleSubmit, register, formState: { errors } } = useForm({
+  const { handleSubmit, register, formState: { errors },reset } = useForm({
     mode: "all"
   });
 
   console.log(errors)
 
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    try {
+      await apiHandler.post("/api/login", data);
+
+      console.log('Server response:', response.data);
+      reset();
+    } catch (error) {
+      console.error('Error sending data to the backend:', error);
+    }
   }
   return (
     <Flex>
@@ -88,6 +95,20 @@ const page = () => {
                   {errors.category && errors.category.message}
                 </FormErrorMessage>
               </FormControl>
+              <FormControl isInvalid={errors.category}>
+                <FormLabel htmlFor='description'>Description</FormLabel>
+                <Input
+                  id='description'
+                  placeholder='description'
+                  {...register('description', {
+                    required: 'This is required',
+                    minLength: { value: 4, message: 'Minimum length should be 20' },
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.description && errors.description.message}
+                </FormErrorMessage>
+              </FormControl>
 
             </Flex>
             <Flex
@@ -102,6 +123,7 @@ const page = () => {
                 <Input
                   id='preperations'
                   placeholder='time'
+
                   {...register('preperations', {
                     required: 'This is required',
                   })}
