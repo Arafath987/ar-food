@@ -12,9 +12,4 @@ export const apiHandler = axios.create({
 });
 
 
-apiHandler.interceptors.request.use(req=>{
-    console.log(req,"REWUEST")
-    return req;
-})
-
 apiHandler.defaults.withCredentials = true

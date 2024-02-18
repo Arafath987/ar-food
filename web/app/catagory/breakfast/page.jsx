@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Flex,Box,CircularProgress, useToast } from "@chakra-ui/react";
 import { FoodCard } from "../../../views/dashboard";
 import { apiHandler } from "../../../handler";
-import { Navbar } from "../../../layout/Food/Navbar";
 
 const page = () => {
   const [data, setData] = useState([]);

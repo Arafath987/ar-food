@@ -1,7 +1,7 @@
 "use client";
 const { createContext, useState, useEffect } = require("react");
 import { apiHandler } from "../handler"
-import { useRouter } from 'next/navigation'
+import { useRouter,usePathname } from 'next/navigation'
 import { useToast } from "@chakra-ui/react";
 
 
@@ -10,6 +10,7 @@ export const AuthContext = createContext(null);
 export const AuthContextProvider = ({ children }) => {
   const toast = useToast();
   const router = useRouter()
+  const pathname = usePathname()
   const [user, setUser] = useState(null);
 
   const getUser = async () => {
@@ -18,14 +19,29 @@ export const AuthContextProvider = ({ children }) => {
       setUser(data);
   } catch (error) {
       console.log("Error :", error);
-
   }
   
   }
 
-  useEffect(()=>{
-     getUser()
-  },[])
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      try {
+        await getUser();
+      } catch (error) {
+        console.log("Error :", error);
+      }
+
+      if (user && pathname === "/login") {
+        router.push("/manager/orderlist");
+      }
+    };
+  
+    initializeUser();
+  }, []);
+  
+
+  
 
   const login = async (email, password) => {
     try {
@@ -38,16 +54,16 @@ export const AuthContextProvider = ({ children }) => {
       router.push("/manager/orderlist")
 
       toast({
-        title: "Account existed.",
-        description: "We've confirm your account existed.",
+        title: "Login successful",
+        description: "Welcome back",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
     } catch {
       toast({
-        title: "Account not created.",
-        description: "some error.",
+        title: "Account does not exist",
+        description: "Please signup",
         status: "error",
         duration: 9000,
         isClosable: true,
