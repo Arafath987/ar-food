@@ -15,13 +15,13 @@ const handleLogin = () => {
   return (
     <Flex
       padding="10px"
-      width="130px"
+      width="13vh"
       justifyContent="flex-start"
       flexDirection="column"
       backgroundColor="#31A5A5"
-      height="600px"
-      ml="50px"
-      mt="100px"
+      height="75vh"
+      ml="5vw"
+      mt="10vh"
       alignItems="center"
       borderLeftRadius="20px"
     >

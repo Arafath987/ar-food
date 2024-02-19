@@ -1,21 +1,45 @@
 "use client";
 
-import { TabList, Tabs, Tab, Flex, Tbody, Tr, Td, Th, Table,  Thead, TableContainer, TableCaption } from "@chakra-ui/react";
+import { TabList, Tabs, Tab, Flex, Tbody, Tr, Td, Th, Table,  Thead, TableContainer, TableCaption,useToast } from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
 import { OrderingCard } from "../../../views/dashboard";
+import { useEffect, useState } from "react";
+import { apiHandler } from "../../../handler";
+
 
 const page = () => {
+  const [data, setData] = useState([]);
+  const toast = useToast()
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await apiHandler.get("/api/get-menu-items/2")
+        setData(data.menu_items);
+      } catch {
+        toast({
+          title: "error getting data",
+          status: "error",
+          isClosable: true
+        })
+      } finally {
+        console.log("data",data);
+      }
+    })();
+  }, []);
+
+
   return (
     <Flex>
       <Mdashboard />
 
       <Flex
-        marginTop="100px"
-        padding="10px"
+        marginTop="10vh"
+        padding="1vw"
         justifyContent="flex-start"
         flexDirection="column"
         backgroundColor="#31A5A5"
-        height="600px"
+        width="25vw"
+        height="75vh"
         alignItems="center"
         borderRightRadius="20px"
       >
@@ -33,9 +57,9 @@ const page = () => {
       <Flex
         justifyContent="flex-start"
         alignItems="space-between"
-        mt="100px"
-        ml="20px"
-        width="52%"
+        mt="10vh"
+        ml="2vw"
+        width="52vw"
         flexDirection="column"
       >
         <TableContainer bg="white" rounded="md">
