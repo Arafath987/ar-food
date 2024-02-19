@@ -33,7 +33,7 @@ export const AuthContextProvider = ({ children }) => {
   //     }
 
   //     if (user && pathname === "/login") {
-  //       router.push("/manager/orderlist");
+  //       router.push("/manager/add");
   //     }
   //   };
   

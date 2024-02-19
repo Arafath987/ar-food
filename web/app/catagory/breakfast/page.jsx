@@ -12,7 +12,7 @@ const page = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await apiHandler.get("/api/get-menu-items/1")
+        const { data } = await apiHandler.get("/api/get-menu-items/2")
         setData(data.menu_items);
       } catch {
         toast({
@@ -34,22 +34,22 @@ const page = () => {
         width="100%"
         bgColor="#31A5A5"
         flexWrap="wrap"
-        mt="-75"
+        mt="-.5vh"
         minHeight="70vh"
         alignItems="center"
         justifyContent="center"
         flexDirection={{ base: "row", md: "row" }}
-        gap="5px"
+        gap="1vh"
       >
         {!isLoading &&
           data
-          .filter((el) => el.category === 2)
+          .filter((el) => el.category === 5)
           .map((el) => (
             <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} rating={el.rating} time={el.time} />
           ))}
           {isLoading && (
             <Box
-              height="calc(100%-50px)"
+              height="calc(100%-5vh)"
               display="flex"
               justifyContent="center"
               alignItems="center"
