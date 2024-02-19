@@ -5,16 +5,16 @@ import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 export const CartIcon = () => {
   return (
     <Flex
-      marginTop="-100px"
+      marginTop="-10vh"
       justifyContent="center"
       alignItems="center"
-      width="45px"
-      height="45px"
+      width="4.5vw"
+      height="4.5vh"
       rounded="md"
-      borderRadius="10px"
+      borderRadius="1vw"
     >
       <Link href="/cart">
-        <MdOutlineProductionQuantityLimits size="25px" />
+        <MdOutlineProductionQuantityLimits size="2.5vh" />
       </Link>
     </Flex>
   );

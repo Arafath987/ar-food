@@ -1,8 +1,7 @@
 "use client";
-import { React, useEffect, useState } from "react";
-import { Flex,Box,CircularProgress, useToast, } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Flex,Box,CircularProgress, useToast } from "@chakra-ui/react";
 import { FoodCard } from "../../../views/dashboard";
-
 import { apiHandler } from "../../../handler";
 
 const page = () => {
@@ -13,7 +12,7 @@ const page = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await apiHandler.get("/api/get-menu-items/1")
+        const { data } = await apiHandler.get("/api/get-menu-items/2")
         setData(data.menu_items);
       } catch {
         toast({
@@ -26,28 +25,31 @@ const page = () => {
       }
     })();
   }, []);
+
   return (
-    <div>
+
+
+
       <Flex
         width="100%"
-        minHeight="70vh"
-        marginTop="-75px"
         bgColor="#31A5A5"
         flexWrap="wrap"
+        mt="-.5vh"
+        minHeight="70vh"
         alignItems="center"
         justifyContent="center"
         flexDirection={{ base: "row", md: "row" }}
-        gap="5px"
+        gap="1vh"
       >
-         {!isLoading &&
+        {!isLoading &&
           data
-          .filter((el) => el.category === 3)
+          .filter((el) => el.category === 7)
           .map((el) => (
             <FoodCard name={el.name} price={el.price} image={el.description} id={el.id} rating={el.rating} time={el.time} />
           ))}
-            {isLoading && (
+          {isLoading && (
             <Box
-              height="calc(100%-50px)"
+              height="calc(100%-5vh)"
               display="flex"
               justifyContent="center"
               alignItems="center"
@@ -56,7 +58,6 @@ const page = () => {
             </Box>
           )}
       </Flex>
-    </div>
   );
 };
 
