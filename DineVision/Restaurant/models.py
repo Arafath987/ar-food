@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from django.conf import settings
+
 
 class Restaurant(models.Model):
     owner = models.ForeignKey('Vendor.vendor', on_delete=models.CASCADE, related_name='owned_restaurants')
@@ -30,8 +32,8 @@ class MenuItem(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     is_available = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='menu_item_images/', null=True, blank=True)
-    three_d_image = models.FileField(upload_to='menu_item_3d_images/', null=True, blank=True)
+    image = models.ImageField(null=True, blank=True)
+    three_d_image = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return self.name
