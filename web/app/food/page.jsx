@@ -2,16 +2,18 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { Card, Box, Flex, Button, Image,Text } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams,useRouter } from "next/navigation";
 import { CartContext } from "../../context/Product";
 import { CartIcon } from "../../views/dashboard";
 import { BsClock } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 
+
 const page = () => {
   const [data, setData] = useState();
   const params = useSearchParams();
   const { addCart } = useContext(CartContext);
+  const router = useRouter()
 
   const [isLoading, setLoading] = useState(true);
 
@@ -32,21 +34,21 @@ const page = () => {
 
   return (
     <div>
-      <Card borderRadius="40px" bgColor="white" border="red" borderWidth="2px">
-      <Flex ml="85%" mt="20px">
-              <CartIcon></CartIcon>
-      </Flex>
-        
+      
+      <Card width="100vw" borderRadius="40px" bgColor="white" border="red" borderWidth="2px">
+      <Box ml="80vw"><CartIcon /></Box>
         <Box
-          height="200px"
+          mt="2vh"
+          height="22vh"
           display="flex"
           justifyContent="center"
           alignItems="center"
         >
-           <Image src={data.description} mt="10%" height="250px" width="100%"  >
-            
+           
+           <Image src={data.description}  height="25vh" width="100vw"  >
            </Image>
         </Box>
+        <Button mt="10vh" onClick={()=>router.push("/Ar")}>view on table</Button>
         <Flex mt="20%" justifyContent="space-around">
         <Box>
           <Text >{data.name}</Text>

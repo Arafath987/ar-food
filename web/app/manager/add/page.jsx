@@ -23,12 +23,12 @@ const page = () => {
 
   const onSubmit = async (data) => {
     try {
-      await apiHandler.post("/api/", data);
+      await apiHandler.post("/api/menuitems/create", data);
 
       console.log('data:', data);
       reset();
-    } catch (error) {
-      console.error('Error sending data to the backend:', error);
+    } catch (e) {
+      console.error('Error sending data to the backend:', e);
     }
   }
   return (
@@ -144,6 +144,19 @@ const page = () => {
                 />
                 <FormErrorMessage>
                   {errors.image && errors.image.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor='folderInput'>3D folder</FormLabel>
+                <Input
+                  id='folderInput'
+                  placeholder='folder'
+                  {...register('folderInput')}
+                  type="file"
+                />
+                <FormErrorMessage>
+                  {errors.folderInput&& errors.folderInput.message}
                 </FormErrorMessage>
               </FormControl>
             </Flex>

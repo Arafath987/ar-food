@@ -44,7 +44,7 @@ const page = () => {
         <Flex
           minW="400px"
           width="100%"
-          minHeight="70vh"
+          minHeight="80vh"
           mt="-.5vh"
           bgColor="#31A5A5"
           flexWrap="wrap"

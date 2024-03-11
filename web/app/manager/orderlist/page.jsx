@@ -13,7 +13,7 @@ const page = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await apiHandler.get("/api/get-menu-items/2")
+        const { data } = await apiHandler.get("")
         setData(data.menu_items);
       } catch {
         toast({
@@ -44,8 +44,8 @@ const page = () => {
         borderRightRadius="20px"
       >
 
-        <Tabs variant='soft-rounded' colorScheme='green' background="white" rounded="lg" w="100%">
-          <TabList  display="flex" justifyContent="space-around" alignItems="center">
+        <Tabs variant='soft-rounded' bgColor="#31A5A5" background="white" rounded="lg" w="100%">
+          <TabList borderRadius="25px"  display="flex" justifyContent="space-around" alignItems="center">
             <Tab w="full">New</Tab>
             <Tab w="full">Preparing</Tab>
             <Tab w="full">Delivered</Tab>

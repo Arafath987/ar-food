@@ -35,7 +35,7 @@ const page = () => {
         bgColor="#31A5A5"
         flexWrap="wrap"
         mt="-.5vh"
-        minHeight="70vh"
+        minHeight="80vh"
         alignItems="center"
         justifyContent="center"
         flexDirection={{ base: "row", md: "row" }}

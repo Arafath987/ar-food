@@ -1,30 +1,22 @@
 "use client"
 import React from 'react'
-import name from "../../girlpic/scene.gltf"
 
-const page = () => {
+const ar = () => {
   return (
     <div>
       <head>
-
-      <title>Food projection</title>
+      <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
+      <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/aframe/build/aframe-ar.js"></script> 
+      <title>My AR App</title>
       </head>
-      
+      <body>
+        <a-scene></a-scene>
+      </body>
 
-     <a-scene >
-     <a-assets>
-      <a-asset-item id="model" src={name} ></a-asset-item>
-    </a-assets> 
-      <a-marker present="hiro">
-      {/* <a-box position = "0 2 -1"  width = "1" height= "1" color="red"></a-box>  */}
-      <a-entity gltf-model="#model" position="0 0 0" scale="1 1 1"></a-entity> 
-
-      </a-marker>
-      <a-entity camera></a-entity>
-     </a-scene>
     </div>
   )
 }
 
-export default page
+export default ar
+
 
