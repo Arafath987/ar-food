@@ -30,15 +30,14 @@ class CustomerMenuItemSerializer(serializers.ModelSerializer):
         fields = ['id','name', 'description', 'price', 'image','time','rating','category', 'restaurant']
 
 class SuperuserMenuItemSerializer(serializers.ModelSerializer):
-    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
 
     class Meta:
         model = MenuItem
-        fields = ['id','owner','name', 'description', 'price', 'time','category','restaurant', 'image', 'three_d_image']
+        fields = ['id','owner','name', 'description', 'price', 'time','category','restaurant']
 
-    def create(self, validated_data):
-        image = validated_data.pop('image', None)
-        three_d_image = validated_data.pop('three_d_image', None)
+   # def create(self, validated_data):
+    #    image = validated_data.pop('image', None)
+     #   three_d_image = validated_data.pop('three_d_image', None)
 
 
 class MenuItemUpdateSerializer(serializers.ModelSerializer):

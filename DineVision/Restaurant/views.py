@@ -176,30 +176,29 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             raise AuthenticationFailed('User is not authenticated')
         
         Vendor = vendor.objects.get(id=payload['id'])
-        Vrestaurant = Vendor.restaurant
-        Mcategory = request.data.get('category')
+        restaurant_instant = Vendor.restaurant
+        category_id = request.data.get('category')
+
+        print(restaurant_instant)
+        print(category_id)
         try:
-           category = Category.objects.get(id=Mcategory, restaurant=Vrestaurant)
+           category = Category.objects.get(id=category_id, restaurant=restaurant_instant)
         except Category.DoesNotExist:
             Response("Category not found for the specified restaurant.")
-   
-        request.data['category'] = Mcategory
-        request.data['owner'] = Vendor.id
-        request.data['restaurant'] = Vrestaurant.id            
-
+               
         serializer = SuperuserMenuItemSerializer(data=request.data)
 
-        if Vendor.restaurant == Vrestaurant:
+        if Vendor.restaurant == restaurant_instant:
             
-            image_file = request.FILES.get('image')
-            three_d_image_file = request.FILES.get('three_d_image')
+           # image_file = request.FILES.get('image')
+           # three_d_image_file = request.FILES.get('three_d_image')
 
             if serializer.is_valid():
                 
-                serializer.validated_data['image'] = image_file
-                serializer.validated_data['three_d_image'] = three_d_image_file
+              #  serializer.validated_data['image'] = image_file
+              #  serializer.validated_data['three_d_image'] = three_d_image_file
 
-                serializer.save(category=category, owner=Vendor, restaurant = Vrestaurant)
+                serializer.save(category=category, owner=Vendor, restaurant = restaurant_instant)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 print(serializer.errors)
