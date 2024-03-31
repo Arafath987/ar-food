@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from Restaurant.models import Category, MenuItem
-
+from storages.backends.s3boto3 import S3Boto3Storage
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,7 +34,11 @@ class SuperuserMenuItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MenuItem
-        fields = ['id','name', 'description','category', 'price','time','owner','restaurant']
+        fields = ['id','owner','name', 'description', 'price', 'time','category','restaurant', 'image', 'three_d_image']
+
+    def create(self, validated_data):
+        image = validated_data.pop('image', None)
+        three_d_image = validated_data.pop('three_d_image', None)
 
 
 class MenuItemUpdateSerializer(serializers.ModelSerializer):
