@@ -178,26 +178,25 @@ class MenuItemViewSet(viewsets.ModelViewSet):
         Vendor = vendor.objects.get(id=payload['id'])
         Vrestaurant = Vendor.restaurant
         Mcategory = request.data.get('category')
+
+        print(Vrestaurant)
+        print(Mcategory)
         try:
            category = Category.objects.get(id=Mcategory, restaurant=Vrestaurant)
         except Category.DoesNotExist:
             Response("Category not found for the specified restaurant.")
-   
-        request.data['category'] = Mcategory
-        request.data['owner'] = Vendor.id
-        request.data['restaurant'] = Vrestaurant.id            
-
+               
         serializer = SuperuserMenuItemSerializer(data=request.data)
 
         if Vendor.restaurant == Vrestaurant:
             
-            image_file = request.FILES.get('image')
-            three_d_image_file = request.FILES.get('three_d_image')
+           # image_file = request.FILES.get('image')
+           # three_d_image_file = request.FILES.get('three_d_image')
 
             if serializer.is_valid():
                 
-                serializer.validated_data['image'] = image_file
-                serializer.validated_data['three_d_image'] = three_d_image_file
+              #  serializer.validated_data['image'] = image_file
+              #  serializer.validated_data['three_d_image'] = three_d_image_file
 
                 serializer.save(category=category, owner=Vendor, restaurant = Vrestaurant)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
