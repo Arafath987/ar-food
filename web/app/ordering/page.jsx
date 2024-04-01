@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Flex, Button, Link, Text } from "@chakra-ui/react";
+import {  Flex, Button, Link, Text } from "@chakra-ui/react";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 const page = () => {
@@ -53,18 +53,6 @@ const page = () => {
           height="60px"
         >
           Add item
-        </Button>
-        <Button
-          boxShadow="2xl"
-          rounded="md"
-          borderTopColor="WHITE"
-          borderWidth="3px"
-          borderRadius="50px"
-          margin="10px"
-          width="300px"
-          height="60px"
-        >
-          Cancel order
         </Button>
         <Button
           boxShadow="2xl"

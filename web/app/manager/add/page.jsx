@@ -23,7 +23,12 @@ const page = () => {
 
   const onSubmit = async (data) => {
     try {
-      await apiHandler.post("/api/menuitems/create", data);
+
+      await apiHandler.post("/api/menuitems/create",{
+        ... data, 
+       category:Number(data.category) ,
+       price:Number(data.price)
+       });
 
       console.log('data:', data);
       reset();
@@ -85,10 +90,11 @@ const page = () => {
                 <FormLabel htmlFor='category'>Category</FormLabel>
                 <Input
                   id='category'
+                  type="number"
                   placeholder='category'
                   {...register('category', {
                     required: 'This is required',
-                    minLength: { value: 4, message: 'Minimum length should be 4' },
+                    minLength: { value: 1, message: 'Minimum length should be 1' },
                   })}
                 />
                 <FormErrorMessage>
@@ -119,17 +125,18 @@ const page = () => {
               width="45%"
             >
               <FormControl isInvalid={errors.preperations}>
-                <FormLabel htmlFor='perperations'>Preperations</FormLabel>
+                <FormLabel htmlFor='time'>Preperations</FormLabel>
                 <Input
-                  id='preperations'
+                  id='time'
+                  
                   placeholder='time'
 
-                  {...register('preperations', {
+                  {...register('time', {
                     required: 'This is required',
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.preperations && errors.preperations.message}
+                  {errors.time && errors.time.message}
                 </FormErrorMessage>
               </FormControl>
 

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "Vendor",
     "Restaurant",
     "Orders",
+    "storages",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    "storages",
 ]
 
 MIDDLEWARE = [
@@ -86,19 +86,19 @@ WSGI_APPLICATION = "DineVision.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        'NAME': 'DineVision',
-        'USER' : 'ar_menu_project',
-        'PASSWORD' : 'armenu',
-        'HOST' : 'localhost',
-        'PORT' : 5432
+        "NAME": "postgres",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "localhost",
+        "PORT": 5432,
     }
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_PARSER_CLASSES': (
-        'rest_framework.parsers.JSONParser',
-        'rest_framework.parsers.MultiPartParser',  # Enable handling file uploads
-        'rest_framework.parsers.FormParser',
+    "DEFAULT_PARSER_CLASSES": (
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.MultiPartParser",  # Enable handling file uploads
+        "rest_framework.parsers.FormParser",
     ),
 }
 
@@ -149,13 +149,13 @@ AUTH_USER_MODEL = "Vendor.vendor"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-AWS_ACCESS_KEY_ID = 'AKIA47CRVDSUJ7V7H32I'
-AWS_SECRET_ACCESS_KEY = 'rPT7vpkHnNyrzarpgXOlhu2IiSzp+6xAPbmkSVoo'
-AWS_STORAGE_BUCKET_NAME = 'armenu-fusion'
-AWS_S3_REGION_NAME = 'us-east-1'  # e.g., 'us-east-1'
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_ACCESS_KEY_ID = "AKIA47CRVDSUJ7V7H32I"
+AWS_SECRET_ACCESS_KEY = "rPT7vpkHnNyrzarpgXOlhu2IiSzp+6xAPbmkSVoo"
+AWS_STORAGE_BUCKET_NAME = "armenu-fusion"
+AWS_S3_REGION_NAME = "us-east-1"  # e.g., 'us-east-1'
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
 
-MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/"
 # Set default storage to S3
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"

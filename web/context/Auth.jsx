@@ -51,7 +51,7 @@ export const AuthContextProvider = ({ children }) => {
         password,
       });
       await getUser()
-      router.push("/manager/orderlist")
+      router.push("/manager/samble/new")
 
       toast({
         title: "Login successful",
