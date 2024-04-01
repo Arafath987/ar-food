@@ -186,7 +186,7 @@ class MenuItemViewSet(viewsets.ModelViewSet):
 
         request.data["category"] = Mcategory
         request.data["owner"] = Vendor.id
-        request.data["restaurant"] = Vrestaurant.id
+        # request.data['restaurant'] = Vrestaurant.id
 
         serializer = SuperuserMenuItemSerializer(data=request.data)
 
