@@ -22,7 +22,7 @@ const page = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await apiHandler.get("/api/get-menu-items/1")
+        const { data } = await apiHandler.get("/api/get-menu-items/2")
         setData(data.menu_items);
       } catch {
         toast({
@@ -42,15 +42,16 @@ const page = () => {
 
         <Navbar />
         <Flex
+          minW="400px"
           width="100%"
           minHeight="70vh"
-          mt="-75px"
+          mt="-.5vh"
           bgColor="#31A5A5"
           flexWrap="wrap"
           alignItems="center"
           justifyContent="center"
           flexDirection={{ base: "row", md: "row" }}
-          gap="5px"
+          gap=".5vh"
         >
           {!isLoading &&
             data.map((el) => (

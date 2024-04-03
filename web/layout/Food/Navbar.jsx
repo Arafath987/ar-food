@@ -5,15 +5,16 @@ import React from "react";
 export const Navbar = () => {
   return (
     <Flex
+      minW="400px"
       justifyContent="space-between"
       borderTopLeftRadius="60px"
       bgColor="#31A5A5"
-      height="20vh"
-      padding="20px"
+      height="7vh"
+      padding="2vh"
     >
       <Box>
         <Heading
-          marginLeft="20px"
+          marginLeft="2vw"
           fontSize=""
           fontWeight="normel"
           color="#000000"
