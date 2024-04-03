@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import {
   Flex,
   Button,
@@ -23,7 +23,7 @@ const Page = () => {
     mode: "all",
   });
 
-  const { cart } = useContext(CartContext);
+  const { cart,setPaymentProvider } = useContext(CartContext);
   console.log(errors);
   const dataSubmit = async (info) => {
     try {
@@ -36,8 +36,9 @@ const Page = () => {
       };
 
       const { data } = await apiHandler.post("/api/place-order", orderData);
+      setPaymentProvider(data);
       reset();
-      router.push("/ordering")
+      router.push("/order")
     } catch (e) {
       console.error('Error sending data to the backend:', e);
     }
