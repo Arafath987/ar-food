@@ -179,35 +179,24 @@ class MenuItemViewSet(viewsets.ModelViewSet):
         Vendor = vendor.objects.get(id=payload["id"])
         Vrestaurant = Vendor.restaurant
         Mcategory = request.data.get("category")
-        try:
-            category = Category.objects.get(id=Mcategory, restaurant=Vrestaurant)
-        except Category.DoesNotExist:
-            Response("Category not found for the specified restaurant.")
 
-        request.data["category"] = Mcategory
-        request.data["owner"] = Vendor.id
-        # request.data['restaurant'] = Vrestaurant.id
+        print(Vendor)
+        print("it is:", Vrestaurant)
+        try:
+            category = Category.objects.get(id=Mcategory)
+        except Category.DoesNotExist:
+            return Response(
+                "Category not found for the specified restaurant.",
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
         serializer = SuperuserMenuItemSerializer(data=request.data)
 
-        if Vendor.restaurant == Vrestaurant:
-
-            image_file = request.FILES.get("image")
-            three_d_image_file = request.FILES.get("three_d_image")
-
-            if serializer.is_valid():
-
-                serializer.validated_data["image"] = image_file
-                serializer.validated_data["three_d_image"] = three_d_image_file
-
-                serializer.save(category=category, owner=Vendor, restaurant=Vrestaurant)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                print(serializer.errors)
-                return Response("You are not provided enough data.")
-        raise PermissionDenied(
-            "Permission denied: You are not the owner of this object."
-        )
+        if serializer.is_valid():
+            serializer.save(category=category, owner=Vendor, restaurant=Vrestaurant)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=["PUT", "PATCH"])
     def update_menuitem(self, request, menu_item_id):
