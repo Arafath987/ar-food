@@ -1,21 +1,29 @@
 from rest_framework import serializers
 from .models import Order,OrderItem
 from Restaurant.models import MenuItem
+from Restaurant.models import MenuItem
+
+class MenuItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItem
+        fields = ('id', 'name', 'description', 'price', 'time', 'image') 
 
 class OrderSerializer(serializers.ModelSerializer):
+    items = MenuItemSerializer(many=True, read_only=True) 
+
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ('id', 'table_number', 'items', 'total_price', 'status', 'restaurant')
 
 class OrderItemSupportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['table_number','total_price']
 
-class MenuItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MenuItem
-        fields = ['name']
+#class MenuItemSerializer(serializers.ModelSerializer):
+ #   class Meta:
+ #       model = MenuItem
+#        fields = ['name']
         # image,price
         
 class OrderItemSerializer(serializers.ModelSerializer):
