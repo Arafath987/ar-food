@@ -8,14 +8,16 @@ import {
   FormLabel,
   FormErrorMessage,
   Input,
+  Select,
+  Option
 } from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { apiHandler } from "../../../handler"
 
 
 const page = () => {
-  const { handleSubmit, register, formState: { errors },reset } = useForm({
+  const { handleSubmit, control, register, formState: { errors }, reset } = useForm({
     mode: "all"
   });
 
@@ -24,13 +26,11 @@ const page = () => {
   const onSubmit = async (data) => {
     try {
 
-      await apiHandler.post("/api/menuitems/create",{
-        ... data, 
-       category:Number(data.category) ,
-       price:Number(data.price)
-       });
-
-      console.log('data:', data);
+      await apiHandler.post("/api/menuitems/create", {
+        ...data,
+        category: Number(data.category),
+        price: Number(data.price)
+      });
       reset();
     } catch (e) {
       console.error('Error sending data to the backend:', e);
@@ -86,119 +86,122 @@ const page = () => {
                   {errors.price && errors.price.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.category}>
-                <FormLabel htmlFor='category'>Category</FormLabel>
-                <Input
-                  id='category'
-                  type="number"
-                  placeholder='category'
-                  {...register('category', {
-                    required: 'This is required',
-                    minLength: { value: 1, message: 'Minimum length should be 1' },
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.category && errors.category.message}
-                </FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={errors.category}>
-                <FormLabel htmlFor='description'>Description</FormLabel>
-                <Input
-                  id='description'
-                  placeholder='description'
-                  {...register('description', {
-                    required: 'This is required',
-                    minLength: { value: 4, message: 'Minimum length should be 20' },
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.description && errors.description.message}
-                </FormErrorMessage>
-              </FormControl>
+              <Controller
+                control={control}
+                name="category"
+                render={({ field, fieldState: { error: descError } }) => (
+                  <FormControl isInvalid={errors.category}>
+                    <FormLabel htmlFor='category'>Category</FormLabel>
+                    <Select placeholder='Select option' {...field}>
+                      <option value='1'>Breakfast</option>
+                      <option value='2'>Lunch</option>
+                      <option value='3'>Dinner</option>
+                      <option value='4'>Desert</option>
+                    </Select>
+                    <FormErrorMessage>
+                      {errors.category && errors.category.message}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              />
+            <FormControl isInvalid={errors.category}>
+              <FormLabel htmlFor='description'>Description</FormLabel>
+              <Input
+                id='description'
+                placeholder='description'
+                {...register('description', {
+                  required: 'This is required',
+                  minLength: { value: 4, message: 'Minimum length should be 20' },
+                })}
+              />
+              <FormErrorMessage>
+                {errors.description && errors.description.message}
+              </FormErrorMessage>
+            </FormControl>
 
-            </Flex>
-            <Flex
-              flexDirection="column"
-              ml="4%"
-              bgColor=""
-              height="100%"
-              width="45%"
-            >
-              <FormControl isInvalid={errors.preperations}>
-                <FormLabel htmlFor='time'>Preperations</FormLabel>
-                <Input
-                  id='time'
-                  
-                  placeholder='time'
-
-                  {...register('time', {
-                    required: 'This is required',
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.time && errors.time.message}
-                </FormErrorMessage>
-              </FormControl>
-
-
-              <FormControl>
-                <FormLabel htmlFor='image'>Image</FormLabel>
-                <Input
-                  id='image'
-                  placeholder='Image'
-                  {...register('image')}
-                  type="file"
-                />
-                <FormErrorMessage>
-                  {errors.image && errors.image.message}
-                </FormErrorMessage>
-              </FormControl>
-
-              <FormControl>
-                <FormLabel htmlFor='folderInput'>3D folder</FormLabel>
-                <Input
-                  id='folderInput'
-                  placeholder='folder'
-                  {...register('folderInput')}
-                  type="file"
-                />
-                <FormErrorMessage>
-                  {errors.folderInput&& errors.folderInput.message}
-                </FormErrorMessage>
-              </FormControl>
-            </Flex>
           </Flex>
-          <Button
-            width="70%"
-            height="40px"
-            ml="15%"
-            boxShadow="dark-lg"
-            rounded="md"
-            borderColor="#00000040"
-            borderWidth="2px"
-            borderRadius="10px"
-            bgColor="white"
+          <Flex
+            flexDirection="column"
+            ml="4%"
+            bgColor=""
+            height="100%"
+            width="45%"
           >
-            Back
-          </Button>
-          <Button
-            type="submit"
-            mt="20px"
-            width="70%"
-            height="40px"
-            ml="15%"
-            boxShadow="dark-lg"
-            rounded="md"
-            borderColor="#00000040"
-            borderWidth="2px"
-            borderRadius="10px"
-            bgColor="white"
-          >
-            Save
-          </Button>
-        </form>
+            <FormControl isInvalid={errors.preperations}>
+              <FormLabel htmlFor='time'>Preperations</FormLabel>
+              <Input
+                id='time'
+
+                placeholder='time'
+
+                {...register('time', {
+                  required: 'This is required',
+                })}
+              />
+              <FormErrorMessage>
+                {errors.time && errors.time.message}
+              </FormErrorMessage>
+            </FormControl>
+
+
+            <FormControl>
+              <FormLabel htmlFor='image'>Image</FormLabel>
+              <Input
+                id='image'
+                placeholder='Image'
+                {...register('image')}
+                type="file"
+              />
+              <FormErrorMessage>
+                {errors.image && errors.image.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor='folderInput'>3D folder</FormLabel>
+              <Input
+                id='folderInput'
+                placeholder='folder'
+                {...register('folderInput')}
+                type="file"
+              />
+              <FormErrorMessage>
+                {errors.folderInput && errors.folderInput.message}
+              </FormErrorMessage>
+            </FormControl>
+          </Flex>
       </Flex>
-    </Flex>
+      <Button
+        width="70%"
+        height="40px"
+        ml="15%"
+        boxShadow="dark-lg"
+        rounded="md"
+        borderColor="#00000040"
+        borderWidth="2px"
+        borderRadius="10px"
+        bgColor="white"
+      >
+        Back
+      </Button>
+      <Button
+        type="submit"
+        mt="20px"
+        width="70%"
+        height="40px"
+        ml="15%"
+        boxShadow="dark-lg"
+        rounded="md"
+        borderColor="#00000040"
+        borderWidth="2px"
+        borderRadius="10px"
+        bgColor="white"
+      >
+        Save
+      </Button>
+    </form>
+      </Flex >
+    </Flex >
   );
 };
 

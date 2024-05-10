@@ -86,7 +86,6 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['GET'])
     def ordered_items(self, request):
-        print("hi hello")
         try:
             token = request.COOKIES.get('jwt')
         except token.DoesNotExist:
@@ -99,7 +98,6 @@ class OrderViewSet(viewsets.ModelViewSet):
         try:
             payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
             vendor_id = payload['id']
-            print("Vendor ID:", vendor_id)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('User is not authenticated')
         except jwt.DecodeError:
@@ -116,7 +114,6 @@ class OrderViewSet(viewsets.ModelViewSet):
         if not own_restaurant:
             raise AuthenticationFailed('Vendor does not own any restaurant')
         
-        print(own_restaurant)
 
         preparing_orders = Order.objects.filter(status='ordered', restaurant=own_restaurant)
         serializer = OrderSerializer(preparing_orders, many=True)
