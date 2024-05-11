@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react"
 import {
   Flex,
   Button,
@@ -9,23 +10,40 @@ import {
   FormErrorMessage,
   Input,
   Select,
-  Option
+  Option,
+  Box
 } from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
 import { useForm, Controller } from "react-hook-form";
 import { apiHandler } from "../../../handler"
+import Image from 'next/image';
 
 
 const page = () => {
-  const { handleSubmit, control, register, formState: { errors }, reset } = useForm({
+  const { handleSubmit, control, watch, register, formState: { errors }, reset } = useForm({
     mode: "all"
   });
+  const [cover, selectCover] = useState('');
 
-  console.log(errors)
+  const convert2base64 = (file) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => [selectCover(reader.result?.toString())];
+
+    reader.readAsDataURL(file);
+  };
+
+  useEffect(() => {
+    const image = watch('image');
+    if (typeof image === 'object' && image.length > 0) {
+      convert2base64(image[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch('image')]);
+
 
   const onSubmit = async (data) => {
     try {
-
       await apiHandler.post("/api/menuitems/create", {
         ...data,
         category: Number(data.category),
@@ -104,102 +122,110 @@ const page = () => {
                   </FormControl>
                 )}
               />
-            <FormControl isInvalid={errors.category}>
-              <FormLabel htmlFor='description'>Description</FormLabel>
-              <Input
-                id='description'
-                placeholder='description'
-                {...register('description', {
-                  required: 'This is required',
-                  minLength: { value: 4, message: 'Minimum length should be 20' },
-                })}
-              />
-              <FormErrorMessage>
-                {errors.description && errors.description.message}
-              </FormErrorMessage>
-            </FormControl>
+              <FormControl isInvalid={errors.category}>
+                <FormLabel htmlFor='description'>Description</FormLabel>
+                <Input
+                  id='description'
+                  placeholder='description'
+                  {...register('description', {
+                    required: 'This is required',
+                    minLength: { value: 4, message: 'Minimum length should be 20' },
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.description && errors.description.message}
+                </FormErrorMessage>
+              </FormControl>
 
+            </Flex>
+            <Flex
+              flexDirection="column"
+              ml="4%"
+              bgColor=""
+              height="100%"
+              width="45%"
+            >
+              <FormControl isInvalid={errors.preperations}>
+                <FormLabel htmlFor='time'>Preparations</FormLabel>
+                <Input
+                  id='time'
+                  placeholder='time'
+                  {...register('time', {
+                    required: 'This is required',
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.time && errors.time.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              {cover?.length > 0 && (
+                <Box mt={5}>
+                <Image
+                  src={cover}
+                  width={200}
+                  height={100}
+                  alt="cover image"
+                />  
+              </Box>
+              )}
+
+              <FormControl>
+                <FormLabel htmlFor='image'>Image</FormLabel>
+                <Input
+                  id='image'
+                  placeholder='Image'
+                  {...register('image')}
+                  type="file"
+                />
+                <FormErrorMessage>
+                  {errors.image && errors.image.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor='folderInput'>3D folder</FormLabel>
+                <Input
+                  id='folderInput'
+                  placeholder='folder'
+                  {...register('folderInput')}
+                  type="file"
+                />
+                <FormErrorMessage>
+                  {errors.folderInput && errors.folderInput.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Flex>
           </Flex>
-          <Flex
-            flexDirection="column"
-            ml="4%"
-            bgColor=""
-            height="100%"
-            width="45%"
+          <Button
+            width="70%"
+            height="40px"
+            ml="15%"
+            boxShadow="dark-lg"
+            rounded="md"
+            borderColor="#00000040"
+            borderWidth="2px"
+            borderRadius="10px"
+            bgColor="white"
           >
-            <FormControl isInvalid={errors.preperations}>
-              <FormLabel htmlFor='time'>Preperations</FormLabel>
-              <Input
-                id='time'
-
-                placeholder='time'
-
-                {...register('time', {
-                  required: 'This is required',
-                })}
-              />
-              <FormErrorMessage>
-                {errors.time && errors.time.message}
-              </FormErrorMessage>
-            </FormControl>
-
-
-            <FormControl>
-              <FormLabel htmlFor='image'>Image</FormLabel>
-              <Input
-                id='image'
-                placeholder='Image'
-                {...register('image')}
-                type="file"
-              />
-              <FormErrorMessage>
-                {errors.image && errors.image.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            <FormControl>
-              <FormLabel htmlFor='folderInput'>3D folder</FormLabel>
-              <Input
-                id='folderInput'
-                placeholder='folder'
-                {...register('folderInput')}
-                type="file"
-              />
-              <FormErrorMessage>
-                {errors.folderInput && errors.folderInput.message}
-              </FormErrorMessage>
-            </FormControl>
-          </Flex>
-      </Flex>
-      <Button
-        width="70%"
-        height="40px"
-        ml="15%"
-        boxShadow="dark-lg"
-        rounded="md"
-        borderColor="#00000040"
-        borderWidth="2px"
-        borderRadius="10px"
-        bgColor="white"
-      >
-        Back
-      </Button>
-      <Button
-        type="submit"
-        mt="20px"
-        width="70%"
-        height="40px"
-        ml="15%"
-        boxShadow="dark-lg"
-        rounded="md"
-        borderColor="#00000040"
-        borderWidth="2px"
-        borderRadius="10px"
-        bgColor="white"
-      >
-        Save
-      </Button>
-    </form>
+            Back
+          </Button>
+          <Button
+            type="submit"
+            mt="20px"
+            width="70%"
+            height="40px"
+            ml="15%"
+            boxShadow="dark-lg"
+            rounded="md"
+            borderColor="#00000040"
+            borderWidth="2px"
+            borderRadius="10px"
+            bgColor="white"
+          >
+            Save
+          </Button>
+        </form>
       </Flex >
     </Flex >
   );
