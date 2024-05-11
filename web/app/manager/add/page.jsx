@@ -33,10 +33,26 @@ const page = () => {
     reader.readAsDataURL(file);
   };
 
+ 
+
   useEffect(() => {
     const image = watch('image');
     if (typeof image === 'object' && image.length > 0) {
+      const formData = new FormData();
+      formData.append('image', image[0]);
+
       convert2base64(image[0]);
+
+      const { data } =  apiHandler.patch(
+        `/api/upload`,
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        },
+    );
+
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch('image')]);
@@ -47,7 +63,8 @@ const page = () => {
       await apiHandler.post("/api/menuitems/create", {
         ...data,
         category: Number(data.category),
-        price: Number(data.price)
+        price: Number(data.price),
+
       });
       reset();
     } catch (e) {
