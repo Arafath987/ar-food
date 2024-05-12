@@ -4,7 +4,7 @@ from .models import vendor
 class VendorSerializer(serializers.ModelSerializer):
     class Meta:
         model = vendor
-        fields = "__all__"
+        fields = ['username','email','password']
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)

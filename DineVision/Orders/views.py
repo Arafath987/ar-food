@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import OrderSerializer , OrderWithItemsSerializer
+from .serializers import OrderSerializer , OrderWithItemsSerializer, MenuItemSerializer
 from Restaurant.serializers import CustomerMenuItemSerializer
 from Vendor.models import vendor
 from Restaurant.models import Category, MenuItem, Restaurant
@@ -77,6 +77,7 @@ class PlaceOrderViewSet(viewsets.ModelViewSet):
         response_data = serializer.data
         response_data['rzp_order_id'] = rzp_order_id
         response_data['rzp_amount'] = rzp_amount
+        response_data['Key'] = "rzp_test_x9fBn06d4xJl9V"
 
         return Response(response_data, status=status.HTTP_201_CREATED)
 
@@ -115,9 +116,17 @@ class OrderViewSet(viewsets.ModelViewSet):
             raise AuthenticationFailed('Vendor does not own any restaurant')
         
 
-        preparing_orders = Order.objects.filter(status='ordered', restaurant=own_restaurant)
-        serializer = OrderSerializer(preparing_orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        Ordered_orders = Order.objects.filter(status='ordered', restaurant=own_restaurant)
+        serialized_data = []
+
+        for order in Ordered_orders:
+            order_items = order.items.all()  # Get the menu items associated with the order
+            menu_item_data = MenuItemSerializer(order_items, many=True).data
+            serialized_order = OrderSerializer(order).data
+            serialized_order['items'] = menu_item_data
+            serialized_data.append(serialized_order)
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'])
     def proceed_to_preparation(self, request, order_id):
@@ -140,8 +149,16 @@ class OrderViewSet(viewsets.ModelViewSet):
         
         Vendor = vendor.objects.get(id=payload['id'])
         preparing_orders = Order.objects.filter(status='preparing', restaurant=Vendor.restaurant)
-        serializer = OrderSerializer(preparing_orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serialized_data = []
+
+        for order in preparing_orders:
+            preparing_items = order.items.all()
+            menu_item_data = MenuItemSerializer(preparing_items, many=True).data
+            serialized_order = OrderSerializer(order).data
+            serialized_order['items'] = menu_item_data
+            serialized_data.append(serialized_order)
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
     
     @action(detail=True, methods=['POST'])
     def proceed_to_delivery(self, request, order_id):
@@ -164,8 +181,16 @@ class OrderViewSet(viewsets.ModelViewSet):
         
         Vendor = vendor.objects.get(id=payload['id'])
         delivered_orders = Order.objects.filter(status='delivered', restaurant=Vendor.restaurant)
-        serializer = OrderSerializer(delivered_orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serialized_data = []
+
+        for order in delivered_orders:
+            delivered_items = order.items.all()
+            menu_item_data = MenuItemSerializer(delivered_items, many=True).data
+            serialized_order = OrderSerializer(order).data
+            serialized_order['items'] = menu_item_data
+            serialized_data.append(serialized_order)
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
     
 class OrderItemViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'])
