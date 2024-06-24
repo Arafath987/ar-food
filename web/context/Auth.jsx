@@ -17,9 +17,10 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const { data } = await apiHandler("/api/user_profile");
       setUser(data);
+      return data
   } catch (error) {
       console.log("Error :", error);
-  }
+   }
   
   }
 
@@ -27,14 +28,17 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const initializeUser = async () => {
       try {
-        await getUser();
+       const data =  await getUser();
+        if (data) {
+          if( pathname === "/login"){
+            router.push("/manager/add");
+          }else{
+            router.push("/manager/samble/new");
+          }
+        }
       } catch (error) {
         console.log("Error :", error);
-      }
-
-      if (user && pathname === "/login") {
-        router.push("/manager/orderlist");
-      }
+      }      
     };
   
     initializeUser();
@@ -51,7 +55,7 @@ export const AuthContextProvider = ({ children }) => {
         password,
       });
       await getUser()
-      router.push("/manager/orderlist")
+      router.push("/manager/samble/new")
 
       toast({
         title: "Login successful",
@@ -72,7 +76,16 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const logOut = async () => { 
-    router.push("/login")
+    try{
+      await apiHandler.post("/api/logout")
+      router.push("/login")
+    }catch{
+      toast({
+        title:"error logging out",
+        status:"error",
+        duration:9000
+      }) 
+    }
   };
 
   const value = {

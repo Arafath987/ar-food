@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react"
 import {
   Flex,
   Button,
@@ -8,27 +9,66 @@ import {
   FormLabel,
   FormErrorMessage,
   Input,
+  Select,
+  Option,
+  Box
 } from "@chakra-ui/react";
 import { Mdashboard } from "../../../layout/Food/Mdashboard";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { apiHandler } from "../../../handler"
+import Image from 'next/image';
 
 
 const page = () => {
-  const { handleSubmit, register, formState: { errors },reset } = useForm({
+  const { handleSubmit, control, watch, register, formState: { errors }, reset } = useForm({
     mode: "all"
   });
+  const [cover, selectCover] = useState('');
 
-  console.log(errors)
+  const convert2base64 = (file) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => [selectCover(reader.result?.toString())];
+
+    reader.readAsDataURL(file);
+  };
+
+ 
+
+  useEffect(() => {
+    const image = watch('image');
+    if (typeof image === 'object' && image.length > 0) {
+      const formData = new FormData();
+      formData.append('image', image[0]);
+
+      convert2base64(image[0]);
+
+      const { data } =  apiHandler.patch(
+        `/api/upload`,
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        },
+    );
+
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch('image')]);
 
 
   const onSubmit = async (data) => {
     try {
-      await apiHandler.post("/api/login", data);
+      await apiHandler.post("/api/menuitems/create", {
+        ...data,
+        category: Number(data.category),
+        price: Number(data.price),
 
-      console.log('Server response:', response.data);
+      });
       reset();
-    } catch (error) {
-      console.error('Error sending data to the backend:', error);
+    } catch (e) {
+      console.error('Error sending data to the backend:', e);
     }
   }
   return (
@@ -57,7 +97,7 @@ const page = () => {
                   id='name'
                   placeholder='Biriyani'
                   {...register('name', {
-                    required: 'This is required',
+                    required: 'Thi¯s is required',
                     minLength: { value: 4, message: 'Minimum length should be 4' },
                   })}
                 />
@@ -81,20 +121,24 @@ const page = () => {
                   {errors.price && errors.price.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.category}>
-                <FormLabel htmlFor='category'>Category</FormLabel>
-                <Input
-                  id='category'
-                  placeholder='category'
-                  {...register('category', {
-                    required: 'This is required',
-                    minLength: { value: 4, message: 'Minimum length should be 4' },
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.category && errors.category.message}
-                </FormErrorMessage>
-              </FormControl>
+              <Controller
+                control={control}
+                name="category"
+                render={({ field, fieldState: { error: descError } }) => (
+                  <FormControl isInvalid={errors.category}>
+                    <FormLabel htmlFor='category'>Category</FormLabel>
+                    <Select placeholder='Select option' {...field}>
+                      <option value='1'>Breakfast</option>
+                      <option value='2'>Lunch</option>
+                      <option value='3'>Dinner</option>
+                      <option value='4'>Desert</option>
+                    </Select>
+                    <FormErrorMessage>
+                      {errors.category && errors.category.message}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              />
               <FormControl isInvalid={errors.category}>
                 <FormLabel htmlFor='description'>Description</FormLabel>
                 <Input
@@ -119,20 +163,29 @@ const page = () => {
               width="45%"
             >
               <FormControl isInvalid={errors.preperations}>
-                <FormLabel htmlFor='perperations'>Preperations</FormLabel>
+                <FormLabel htmlFor='time'>Preparations</FormLabel>
                 <Input
-                  id='preperations'
+                  id='time'
                   placeholder='time'
-
-                  {...register('preperations', {
+                  {...register('time', {
                     required: 'This is required',
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.preperations && errors.preperations.message}
+                  {errors.time && errors.time.message}
                 </FormErrorMessage>
               </FormControl>
 
+              {cover?.length > 0 && (
+                <Box mt={5}>
+                <Image
+                  src={cover}
+                  width={200}
+                  height={100}
+                  alt="cover image"
+                />  
+              </Box>
+              )}
 
               <FormControl>
                 <FormLabel htmlFor='image'>Image</FormLabel>
@@ -144,6 +197,19 @@ const page = () => {
                 />
                 <FormErrorMessage>
                   {errors.image && errors.image.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor='folderInput'>3D folder</FormLabel>
+                <Input
+                  id='folderInput'
+                  placeholder='folder'
+                  {...register('folderInput')}
+                  type="file"
+                />
+                <FormErrorMessage>
+                  {errors.folderInput && errors.folderInput.message}
                 </FormErrorMessage>
               </FormControl>
             </Flex>
@@ -177,8 +243,8 @@ const page = () => {
             Save
           </Button>
         </form>
-      </Flex>
-    </Flex>
+      </Flex >
+    </Flex >
   );
 };
 

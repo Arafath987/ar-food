@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import OrderSerializer , OrderWithItemsSerializer
+from .serializers import OrderSerializer , OrderWithItemsSerializer, MenuItemSerializer
 from Restaurant.serializers import CustomerMenuItemSerializer
 from Vendor.models import vendor
 from Restaurant.models import Category, MenuItem, Restaurant
@@ -15,6 +15,11 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 import jwt,datetime
+import razorpay 
+
+
+client = razorpay.Client(auth=("rzp_test_x9fBn06d4xJl9V", "KEdSEKtQ0tU0FuFlv3lCkyAm"))
+
 
 class PlaceOrderViewSet(viewsets.ModelViewSet):
     
@@ -52,30 +57,76 @@ class PlaceOrderViewSet(viewsets.ModelViewSet):
             order.total_price += menu_item.price * quantity
 
         order.save()
+        DATA={
+            "amount": float(order.total_price) * 100,
+            "currency": "INR",
+            "receipt": "receipt#1",
+            "partial_payment": False,
+            "notes": {
+                "key1": "value3",
+                "key2": "value2"
+                }
+            }
+        rzp_order=client.order.create(data=DATA)
+        print("The rzp is:",rzp_order)
+
+        rzp_order_id = rzp_order['id']
+        rzp_amount = rzp_order['amount']
 
         serializer = OrderSerializer(order)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        response_data = serializer.data
+        response_data['rzp_order_id'] = rzp_order_id
+        response_data['rzp_amount'] = rzp_amount
+        response_data['Key'] = "rzp_test_x9fBn06d4xJl9V"
+
+        return Response(response_data, status=status.HTTP_201_CREATED)
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer 
 
-    @action(detail=False, methods=['GET'])
+    @action(detail=True, methods=['GET'])
     def ordered_items(self, request):
-        token = request.COOKIES.get('jwt') 
+        try:
+            token = request.COOKIES.get('jwt')
+        except token.DoesNotExist:
+            raise AuthenticationFailed('Vendor does not exist')
 
         if not token:
             raise AuthenticationFailed('User is not authenticated')
+        print("Token:", token)
         
         try:
             payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
+            vendor_id = payload['id']
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('User is not authenticated')
+        except jwt.DecodeError:
+            raise AuthenticationFailed('Invalid token')
+        except KeyError:
+            raise AuthenticationFailed('Vendor ID not found in token payload')
+
+        try:
+            Vendor = vendor.objects.get(id=vendor_id)
+        except vendor.DoesNotExist:
+            raise AuthenticationFailed('Vendor does not exist')
+
+        own_restaurant = Vendor.restaurant
+        if not own_restaurant:
+            raise AuthenticationFailed('Vendor does not own any restaurant')
         
-        Vendor = vendor.objects.get(id=payload['id'])
-        preparing_orders = Order.objects.filter(status='ordered', restaurant=Vendor.restaurant)
-        serializer = OrderSerializer(preparing_orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        Ordered_orders = Order.objects.filter(status='ordered', restaurant=own_restaurant)
+        serialized_data = []
+
+        for order in Ordered_orders:
+            order_items = order.items.all()  # Get the menu items associated with the order
+            menu_item_data = MenuItemSerializer(order_items, many=True).data
+            serialized_order = OrderSerializer(order).data
+            serialized_order['items'] = menu_item_data
+            serialized_data.append(serialized_order)
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['POST'])
     def proceed_to_preparation(self, request, order_id):
@@ -98,8 +149,16 @@ class OrderViewSet(viewsets.ModelViewSet):
         
         Vendor = vendor.objects.get(id=payload['id'])
         preparing_orders = Order.objects.filter(status='preparing', restaurant=Vendor.restaurant)
-        serializer = OrderSerializer(preparing_orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serialized_data = []
+
+        for order in preparing_orders:
+            preparing_items = order.items.all()
+            menu_item_data = MenuItemSerializer(preparing_items, many=True).data
+            serialized_order = OrderSerializer(order).data
+            serialized_order['items'] = menu_item_data
+            serialized_data.append(serialized_order)
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
     
     @action(detail=True, methods=['POST'])
     def proceed_to_delivery(self, request, order_id):
@@ -122,8 +181,16 @@ class OrderViewSet(viewsets.ModelViewSet):
         
         Vendor = vendor.objects.get(id=payload['id'])
         delivered_orders = Order.objects.filter(status='delivered', restaurant=Vendor.restaurant)
-        serializer = OrderSerializer(delivered_orders, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serialized_data = []
+
+        for order in delivered_orders:
+            delivered_items = order.items.all()
+            menu_item_data = MenuItemSerializer(delivered_items, many=True).data
+            serialized_order = OrderSerializer(order).data
+            serialized_order['items'] = menu_item_data
+            serialized_data.append(serialized_order)
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
     
 class OrderItemViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'])
