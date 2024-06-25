@@ -29,11 +29,11 @@ class CustomerMenuItemSerializer(serializers.ModelSerializer):
         model = MenuItem
         fields = ['id','name', 'description', 'price', 'image','time','rating','category', 'restaurant']
 
-class SuperuserMenuItemSerializer(serializers.ModelSerializer):
+class CreateMenuItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MenuItem
-        fields = ['id','owner','name', 'description', 'price', 'time','category','restaurant']
+        fields = ['id','name', 'description', 'price', 'time','category','restaurant']
 
    # def create(self, validated_data):
     #    image = validated_data.pop('image', None)

@@ -5,17 +5,14 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import OrderSerializer , OrderWithItemsSerializer, MenuItemSerializer
 from Restaurant.serializers import CustomerMenuItemSerializer
-from Vendor.models import vendor
 from Restaurant.models import Category, MenuItem, Restaurant
 from Orders.models import Order,OrderItem
 from rest_framework.decorators import api_view
-from django.contrib.auth.decorators import login_required
-from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import AuthenticationFailed
 import jwt,datetime
 import razorpay 
+from Restaurant.utils import authenticate_user
 
 
 client = razorpay.Client(auth=("rzp_test_x9fBn06d4xJl9V", "KEdSEKtQ0tU0FuFlv3lCkyAm"))
@@ -92,24 +89,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         except token.DoesNotExist:
             raise AuthenticationFailed('Vendor does not exist')
 
-        if not token:
-            raise AuthenticationFailed('User is not authenticated')
-        print("Token:", token)
-        
-        try:
-            payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
-            vendor_id = payload['id']
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('User is not authenticated')
-        except jwt.DecodeError:
-            raise AuthenticationFailed('Invalid token')
-        except KeyError:
-            raise AuthenticationFailed('Vendor ID not found in token payload')
-
-        try:
-            Vendor = vendor.objects.get(id=vendor_id)
-        except vendor.DoesNotExist:
-            raise AuthenticationFailed('Vendor does not exist')
+        Vendor = authenticate_user(token)
 
         own_restaurant = Vendor.restaurant
         if not own_restaurant:
@@ -137,17 +117,13 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def preparation_orders(self, request):
-        token = request.COOKIES.get('jwt')
 
-        if not token:
-            raise AuthenticationFailed('User is not authenticated')
-        
         try:
-            payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('User is not authenticated')
-        
-        Vendor = vendor.objects.get(id=payload['id'])
+            token = request.COOKIES.get('jwt')
+        except token.DoesNotExist:
+            raise AuthenticationFailed('Vendor does not exist')
+
+        Vendor = authenticate_user(token)
         preparing_orders = Order.objects.filter(status='preparing', restaurant=Vendor.restaurant)
         serialized_data = []
 
@@ -169,17 +145,13 @@ class OrderViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['GET'])
     def orders_delivered(self, request):
-        token = request.COOKIES.get('jwt')
 
-        if not token:
-            raise AuthenticationFailed('User is not authenticated')
-        
         try:
-            payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('User is not authenticated')
-        
-        Vendor = vendor.objects.get(id=payload['id'])
+            token = request.COOKIES.get('jwt')
+        except token.DoesNotExist:
+            raise AuthenticationFailed('Vendor does not exist')
+
+        Vendor = authenticate_user(token)
         delivered_orders = Order.objects.filter(status='delivered', restaurant=Vendor.restaurant)
         serialized_data = []
 
