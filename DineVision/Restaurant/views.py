@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,21 +7,18 @@ from rest_framework.views import APIView
 from .serializers import (
     CategorySerializer,
     CustomerMenuItemSerializer,
-    SuperuserMenuItemSerializer,
+    CreateMenuItemSerializer,
     MenuItemUpdateSerializer,
     CategoryUpdateSerializer,
     FrontPageMenuItemSerializer,
     CustomerCategorySerializer,
 )
-from Vendor.models import vendor
 from Restaurant.models import Category, MenuItem, Restaurant
 from rest_framework.decorators import api_view
-from django.contrib.auth.decorators import login_required
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import AuthenticationFailed
-import jwt, datetime
+from .utils import authenticate_user
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -31,17 +27,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def view_category(self, request):
         token = request.COOKIES.get("jwt")
 
-        if not token:
-            raise AuthenticationFailed("User is not authenticated")
-
-        try:
-            payload = jwt.decode(token, "your_secret_key", algorithms=["HS256"])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("User is not authenticated")
-
-        Vendor = vendor.objects.get(id=payload["id"])
-        Vrestaurant = Vendor.restaurant
-        categories = Category.objects.filter(restaurant=Vrestaurant)
+        Vendor = authenticate_user(token)
+        Vendor_restaurant = Vendor.restaurant
+        categories = Category.objects.filter(restaurant=Vendor_restaurant)
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
@@ -62,22 +50,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
         token = request.COOKIES.get("jwt")
 
-        if not token:
-            raise AuthenticationFailed("User is not authenticated")
-
-        try:
-            payload = jwt.decode(token, "your_secret_key", algorithms=["HS256"])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("User is not authenticated")
-
-        Vendor = vendor.objects.get(id=payload["id"])
-        Vrestaurant = Vendor.restaurant
+        Vendor = authenticate_user(token)
+        Vendor_restaurant = Vendor.restaurant
 
         serializer = CategorySerializer(data=request.data)
 
         if serializer.is_valid():
 
-            serializer.save(restaurant=Vrestaurant, owner=Vendor)
+            serializer.save(restaurant=Vendor_restaurant)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             raise PermissionDenied(
@@ -115,8 +95,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
             )
 
 
+
 class MenuItemViewSet(viewsets.ModelViewSet):
 
+# Return the list of all menu items 
     @api_view(["GET"])
     def get_menu_items(request, restaurant_id):
         try:
@@ -125,22 +107,24 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             return Response({"error": "Restaurant not found"}, status=404)
 
         categories = Category.objects.filter(restaurant=restaurant)
-        items = MenuItem.objects.filter(category__in=categories)
+        items = MenuItem.objects.filter(category__in=categories,is_available=True)
 
         serializer = CustomerMenuItemSerializer(items, many=True)
         return Response({"menu_items": serializer.data})
 
+# Return the the list of menu items of specific category 
     @action(detail=False, methods=["GET"])
     def by_category(self, request, category_id):
         try:
             category = Category.objects.get(id=category_id)
         except:
             return Response({"error": "Restaurant not found"}, status=404)
-        items = MenuItem.objects.filter(category=category)
+        items = MenuItem.objects.filter(category=category,is_available=True)
 
         serializer = FrontPageMenuItemSerializer(items, many=True)
         return Response(serializer.data)
 
+# Get the details of a single menu item
     @action(detail=True, methods=["GET"])
     def item_detail(self, request, menu_item_id):
         try:
@@ -151,52 +135,59 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except MenuItem.DoesNotExist:
             return Response({"error": "Menu item does not exist"}, status=404)
+        
 
-    @action(detail=True, methods=["GET"])
-    def admin_item_detail(self, request, menu_item_id):
-        try:
-            menu_item = MenuItem.objects.get(id=menu_item_id)
-            serializer_class = SuperuserMenuItemSerializer
-            serializer = serializer_class(menu_item)
-
-            return Response(serializer.data)
-        except MenuItem.DoesNotExist:
-            return Response({"error": "Menu item does not exist"}, status=404)
-
+# Create a menuitem,the restaurant and Vendor is identified on the basis of cookie 
     @action(detail=False, methods=["POST"])
     def create_menuitem(self, request):
 
+        def fetch_categories(vendor_restaurant):
+            categories = Category.objects.filter(restaurant=vendor_restaurant)
+            categories_data = [{"id": category.id, "name": category.name} for category in categories]
+            total_categories = categories.count()
+            return categories_data, total_categories
+
+        def create_menu_item(data, vendor, vendor_restaurant, mcategory, response_data):
+            try:
+                category = Category.objects.get(id=mcategory, restaurant=vendor_restaurant)
+            except Category.DoesNotExist:
+                response_data['error'] = "Category not found for the specified restaurant."
+                return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+            
+            serializer = CreateMenuItemSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save(category=category, restaurant=vendor_restaurant)
+                response_data['menu_item'] = serializer.data
+                return Response(response_data, status=status.HTTP_201_CREATED)
+            else:
+                response_data['errors'] = serializer.errors
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
         token = request.COOKIES.get("jwt")
+        vendor = authenticate_user(token)
 
-        if not token:
-            raise AuthenticationFailed("User is not authenticated")
+        if not vendor:
+            return Response("Unauthorized", status=status.HTTP_401_UNAUTHORIZED)
 
-        try:
-            payload = jwt.decode(token, "your_secret_key", algorithms=["HS256"])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("User is not authenticated")
+        vendor_restaurant = vendor.restaurant
+        mcategory = request.data.get("category")
 
-        Vendor = vendor.objects.get(id=payload["id"])
-        Vrestaurant = Vendor.restaurant
-        Mcategory = request.data.get("category")
+        response_data = {}
 
-        print(Vendor)
-        print("it is:", Vrestaurant)
-        try:
-            category = Category.objects.get(id=Mcategory)
-        except Category.DoesNotExist:
-            return Response(
-                "Category not found for the specified restaurant.",
-                status=status.HTTP_404_NOT_FOUND,
-            )
+        # Fetch categories
+        categories_data, total_categories = fetch_categories(vendor_restaurant)
+        response_data.update({
+            "categories": categories_data,
+            "total_categories": total_categories
+        })
 
-        serializer = SuperuserMenuItemSerializer(data=request.data)
+        if not mcategory:
+            return Response(response_data, status=status.HTTP_200_OK)
 
-        if serializer.is_valid():
-            serializer.save(category=category, owner=Vendor, restaurant=Vrestaurant)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Create menu item if mcategory is provided
+        return create_menu_item(request.data, vendor, vendor_restaurant, mcategory, response_data)
+
+
 
     @action(detail=True, methods=["PUT", "PATCH"])
     def update_menuitem(self, request, menu_item_id):
@@ -214,6 +205,7 @@ class MenuItemViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     @action(detail=True, methods=["DELETE"])
     def delete_menuitem(self, request, menu_item_id):

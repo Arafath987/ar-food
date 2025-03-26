@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv 
+
+
+load_dotenv() 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +31,8 @@ SECRET_KEY = "django-insecure-#5r7re88uiewphmw^_as1b)*+6m_s1_4!n5+9-sptz!i7!rw_z
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+
+HASH_KEY = os.getenv('HASH_KEY')
 
 
 CORS_ALLOWED_ORIGINS = [
@@ -84,13 +91,13 @@ WSGI_APPLICATION = "DineVision.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DineVision',
-        'USER' : 'ar_menu_project',
-        'PASSWORD' : 'armenu',
-        'HOST' : 'localhost',
-        'PORT' : 5432
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -149,10 +156,10 @@ AUTH_USER_MODEL = "Vendor.vendor"
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-AWS_ACCESS_KEY_ID = "AKIA47CRVDSUJ7V7H32I"
-AWS_SECRET_ACCESS_KEY = "rPT7vpkHnNyrzarpgXOlhu2IiSzp+6xAPbmkSVoo"
-AWS_STORAGE_BUCKET_NAME = "armenu-fusion"
-AWS_S3_REGION_NAME = "us-east-1"  # e.g., 'us-east-1'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')  # e.g., 'us-east-1'
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
 

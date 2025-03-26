@@ -39,8 +39,6 @@ class vendor(AbstractBaseUser):
     designation = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(max_length=254,unique=True,)
-    restaurant_name = models.CharField(max_length=50)
-    restaurant_licence = models.ImageField(upload_to="vendor/licence", blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     created_date = models.DateTimeField(auto_now_add=True)
